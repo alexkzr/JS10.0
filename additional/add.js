@@ -7,9 +7,9 @@ for (let i = 0; i < num.length; i++) {
   sum = sum * Number(num[i]);
 }
 let power = sum ** 3;
-console.log('power: ', power);
 let twoDigits = 'Первые две цифры = ' + String(power).slice(0, 2);
 document.querySelector('.result').innerHTML += twoDigits;
+console.log('power: ', power);
 console.log('sum: ', sum);
 console.log('twoDigits: ', twoDigits);
 
