@@ -85,4 +85,3 @@ document.querySelector('.result').innerHTML += arrResult;
 let namePerson = 'Артем';
 
 namePerson == 'Артем' ? console.log('директор') : namePerson == 'Максим' ? console.log('преподаватель') : console.log('студент');
-access = firstCheck ? "Доступ запрещен" : secondCheck ? "Доступ запрещен" : "Доступ разрешен";
