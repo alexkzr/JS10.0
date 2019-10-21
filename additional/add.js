@@ -1,3 +1,4 @@
+'use strict';
 let lang = 'en';
 let arrIf = [];
 let arrSwitch = [];
@@ -22,7 +23,7 @@ let array = [
     'Saturday',
     'Sunday  \n'
   ]
-]
+];
 
 if (lang == 'ru') {
   arrIf = [
@@ -34,7 +35,7 @@ if (lang == 'ru') {
     'Пятница',
     'Суббота',
     'Воскресенье \n'
-  ]
+  ];
 } else if (lang == 'en') {
   arrIf = [
     'If statement: ',
@@ -45,7 +46,7 @@ if (lang == 'ru') {
     'Friday',
     'Saturday',
     'Sunday  \n'
-  ]
+  ];
 }
 
 switch (lang) {
@@ -59,7 +60,7 @@ switch (lang) {
       'Friday',
       'Saturday',
       'Sunday  \n'
-    ]
+    ];
     break;
   case 'ru':
     arrSwitch = [
@@ -71,7 +72,7 @@ switch (lang) {
       'Пятница',
       'Суббота',
       'Воскресенье \n'
-    ]
+    ];
     break;
 }
 
@@ -83,6 +84,5 @@ document.querySelector('.result').innerHTML += arrResult;
 
 let namePerson = 'Артем';
 
-namePerson == 'Артем' ? console.log('директор') : console.log('студент');
-namePerson == 'Максим' ? console.log('преподаватель') : console.log('студент');
-// namePerson !== 'Максим' && namePerson !== 'Артем' ? console.log('студент') : console.log('студент');
+namePerson == 'Артем' ? console.log('директор') : namePerson == 'Максим' ? console.log('преподаватель') : console.log('студент');
+access = firstCheck ? "Доступ запрещен" : secondCheck ? "Доступ запрещен" : "Доступ разрешен";
