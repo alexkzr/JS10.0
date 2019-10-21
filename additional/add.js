@@ -10,7 +10,7 @@ let array = [
     'Четверг',
     'Пятница',
     'Суббота',
-    'Воскресенье'
+    'Воскресенье \n'
   ],
   [
     'Array: ',
@@ -20,7 +20,7 @@ let array = [
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday '
+    'Sunday  \n'
   ]
 ]
 
@@ -33,7 +33,7 @@ if (lang == 'ru') {
     'Четверг',
     'Пятница',
     'Суббота',
-    'Воскресенье'
+    'Воскресенье \n'
   ]
 } else if (lang == 'en') {
   arrIf = [
@@ -44,7 +44,7 @@ if (lang == 'ru') {
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday '
+    'Sunday  \n'
   ]
 }
 
@@ -58,7 +58,7 @@ switch (lang) {
       'Thursday',
       'Friday',
       'Saturday',
-      'Sunday '
+      'Sunday  \n'
     ]
     break;
   case 'ru':
@@ -70,13 +70,15 @@ switch (lang) {
       'Четверг',
       'Пятница',
       'Суббота',
-      'Воскресенье'
+      'Воскресенье \n'
     ]
     break;
 }
 
 document.querySelector('.result').innerHTML += arrIf;
 document.querySelector('.result').innerHTML += arrSwitch;
+let arrResult = lang == 'en' ? array[1] : array[0];
+document.querySelector('.result').innerHTML += arrResult;
 
 
 let namePerson = 'Артем';
