@@ -1,5 +1,5 @@
 'use strict';
-let money = +prompt('Ваш месячный доход?');
+let money;
 
 let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
 
@@ -12,32 +12,57 @@ showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 
-let question1 = prompt('Какие обязательные ежемесячные расходы у вас есть?');
-let question3 = +prompt('Во сколько это обойдется?');
-let question2 = prompt('Какие обязательные ежемесячные расходы у вас есть?');
-let question4 = +prompt('Во сколько это обойдется?');
+let start = function() {
+  money = prompt('Ваш месячный доход?');
+ 
+  while(isNaN(money) || money === '' || money === null) {
+    money = prompt('Ваш месячный доход?');
+  }
+};
+start();
+let question1;
+let question2;
 
 
-let getExpensesMonth = function (a, b) {
-  let result = a + b;
+let getExpensesMonth = function() {
+  let result = 0;
+
+  for (let i = 0; i < 2; i++) {
+
+    if (i === 0) {
+      question1 = prompt('Какие обязательные ежемесячные расходы у вас есть?', 'аренда');
+    } else if (i === 1) {
+      question2 = prompt('Какие обязательные ежемесячные расходы у вас есть?', 'транспорт');
+
+    }
+   result += +prompt('Во сколько это обойдется?');
+    while (isNaN(result) || result === '' || result === null) {
+    result += +prompt('Во сколько это обойдется?');
+    }
+  }
   return result;
 };
-
+let exppensesAmount = getExpensesMonth();
 let getAccumulatedMonth = function (a, b) {
   let result = a - b;
   return result;
 
 };
-let accumulatedMonth = getAccumulatedMonth(money, getExpensesMonth(question3, question4));
+let accumulatedMonth = getAccumulatedMonth(money, exppensesAmount);
 
 
-let budgetMonth = money - question3 - question4;
+let budgetMonth = money - exppensesAmount;
 const mission = 500000;
 let missionAccomplished = Math.ceil(mission / budgetMonth);
 
 let getTargetMonth = function (a, b) {
   let result = Math.ceil(a / b);
-  return result;
+  if (result <= 0) {
+    return 'Цель не будет достигнута';
+  } else {
+    return 'Цель будет достигнута через ' + result + ' месяцев';
+
+  }
 };
 
 console.log('accumulatedMonth: ', accumulatedMonth);
@@ -52,7 +77,7 @@ let getStatusIncome = function () {
     return ('Средний уровень дохода');
   } else if (budgetDay >= 0 && budgetDay <= 300) {
     return ('Низкий уровень дохода');
-  } else {
+  } else if (budgetDay < 0){
     return ('Что-то пошло не так');
   }
 };
