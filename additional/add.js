@@ -1,18 +1,30 @@
-let excerpt = function (param) {
-  console.log('param: ', param);
-  console.log('param: ', param.length);
+'use strict';
+//Задание №1
+let arr = ['25', '38', '49', '77', '284', '356', '4234'];
 
+let findElement = function(array){
   let result = '';
-  if (typeof param !== 'string') {
-    alert('Введите текст не менее 30 символов');
-  } else if (param.length > 30 && typeof param === 'string'){
-    result += param.substr(0, 29).trim();
-    result += '...';
-    return document.write(result);
-  } else if (param.length <= 30 && typeof param === 'string') {
-    result = param;
-    return document.write(result);
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].charAt(0) === '2' || array[i].charAt(0) === '4') {
+      result += array[i] + ', ';
+    }     
   }
+  return result;
 };
-let argument = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-excerpt(argument);
+console.log('Элементы начинающиеся с 2 или 4:' , findElement(arr));
+//Конец задания №1
+
+//Задание №2
+let array2 = [];
+for (let i = 1; i < 101; i++) {
+  array2.push(i);
+}
+
+let result = [];
+for (let i = 0; i < array2.length; i++) {
+  console.log(isPrime(array2[i]));
+  result.push(array2.find(isPrime()));
+  array2.splice(array2.find(isPrime()), 0);
+}
+console.log('array2: ', array2);
+console.log('result: ', result);
