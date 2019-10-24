@@ -1,9 +1,13 @@
 'use strict';
-let number = Math.floor(Math.random() * Math.floor(101));
-console.log('number: ', number);
+let number;
 
-
-let answer = prompt('Я загадал число от 1 до 100, попробуй угадать!');
+let answer;
+let launch = function() {
+  number  = Math.floor(Math.random() * Math.floor(101));
+  console.log('number: ', number);
+answer = prompt('Я загадал число от 1 до 100, попробуй угадать!');
+};
+ 
 let findIt = function () {
   if (answer == null) {
     return alert('Пока!');
@@ -19,22 +23,16 @@ let findIt = function () {
       findIt();
     }
     else if (parseInt(answer) === number) {
-      return alert('Поздравляю, вы угадали!!!');
+      alert('Поздравляю, вы угадали!!!');
+      let ask = confirm('Хотите сыграть еще?');
+      if (ask === true) {
+        launch();
+        findIt();
+      } else {
+        return alert('Пока!');
+      }
     }
   }
 };
+launch();
 findIt();
-/*
-if (isNaN(answer) || answer === '' && answer != null) {
-  answer = +prompt('Пожалуйста введи число!');
-} else {
-  if (answer < number) {
-    +prompt('Больше!');
-  }
-  else if (answer > number) {
-    +prompt('Меньше!');
-  }
-  else if (answer === number) {
-    alert('Поздравляю, вы угадали!!!');
-  }
-}*/

@@ -1,18 +1,15 @@
 let year1, year2;
 let years = [];
 let final = [];
-year1 = +prompt('Введите год начала отсчета', 1972);
-year2 = +prompt('Введите год конца отсчета', 1995);
-console.log('year1: ', year1);
-console.log('year2: ', year2);
-console.log('years: ', years);
 
-while (isNaN(year1) || year1 === '' || year1 === null) {
+
+do {
   year1 = +prompt('Введите год начала отсчета', 1972);
-}
-while (isNaN(year2) || year2 === '' || year2 === null) {
+} while (isNaN(year1) || year1 === '' || year1 === null);
+do {
   year2 = +prompt('Введите год конца отсчета', 1995);
-}
+} while (isNaN(year2) || year2 === '' || year2 === null);
+
 while (year1 < year2 && year2 !== year1) {
   years.push(year2);
   year2--;
