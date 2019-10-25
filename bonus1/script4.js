@@ -9,11 +9,12 @@ answer = prompt('Я загадал число от 1 до 100, попробуй 
 };
  
 let findIt = function () {
+  do {answer = prompt('Пожалуйста введи число!');}
+  while (isNaN(answer) || answer === '' && answer != null);
+  
   if (answer == null) {
     return alert('Пока!');
-  } else if (isNaN(answer) || answer === '' && answer != null) {
-    answer = prompt('Пожалуйста введи число!');
-  } else {
+  }  else {
     if (parseInt(answer) < number) {
       answer = prompt('Больше!');
       findIt();
