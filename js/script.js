@@ -13,11 +13,9 @@ showTypeOf(income);
 showTypeOf(deposit);
 
 let start = function() {
-  money = prompt('Ваш месячный доход?');
- 
-  while(isNaN(money) || money === '' || money === null) {
+  do {
     money = prompt('Ваш месячный доход?');
-  }
+} while(isNaN(money) || money === '' || money === null);
 };
 start();
 let question1;
@@ -26,6 +24,7 @@ let question2;
 
 let getExpensesMonth = function() {
   let result = 0;
+  let sum = 0;
 
   for (let i = 0; i < 2; i++) {
 
@@ -35,12 +34,12 @@ let getExpensesMonth = function() {
       question2 = prompt('Какие обязательные ежемесячные расходы у вас есть?', 'транспорт');
 
     }
-   result += +prompt('Во сколько это обойдется?');
-    while (isNaN(result) || result === '' || result === null) {
-    result += +prompt('Во сколько это обойдется?');
-    }
+   do {result = prompt('Во сколько это обойдется?');}
+    while (isNaN(result) || result === '' || result == null);
+    sum += +result;
   }
-  return result;
+  
+  return sum;
 };
 let exppensesAmount = getExpensesMonth();
 let getAccumulatedMonth = function (a, b) {
