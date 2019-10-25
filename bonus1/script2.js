@@ -1,7 +1,5 @@
-let year1, year2;
-let years = [];
+let year1, year2, changeable;
 let final = [];
-
 
 do {
   year1 = +prompt('Введите год начала отсчета', 1972);
@@ -10,23 +8,19 @@ do {
   year2 = +prompt('Введите год конца отсчета', 1995);
 } while (isNaN(year2) || year2 === '' || year2 === null);
 
-while (year1 < year2 && year2 !== year1) {
-  years.push(year2);
-  year2--;
-}
-while (year1 > year2 && year1 !== year2) {
-  years.push(year1);
-  year1--;
-}
-if (year1 < year2 && year2 !== year1) {
-  years.push(year1);
-} else if (year1 > year2 && year1 !== year2) {
-  years.push(year2);
+if (year1 > year2) {
+  changeable = year1;
+  console.log('changeable: ', changeable);
+  year1 = year2;
+  console.log('year1: ', year1);
+  year2 = changeable;
+  console.log('year2: ', year2);
 }
 
-for (let i = 0; i < years.length; i++) {
-  if ((years[i] % 4 == 0 && years[i] % 100 != 0) || (years[i] % 400 == 0)) {
-    final.push(years[i]);
+for (let i = year1; i < year2; i++) {
+  if ((i % 4 == 0 && i % 100 != 0) || (i % 400 == 0)) {
+    final.push(i);
   }
 }
+
 console.log('Високосные годы: ', final);
