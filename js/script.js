@@ -74,12 +74,12 @@ let appData = {
 
 };
 appData.getBudget();
-
+console.log('Наша программа включает в себя следующие данные: \n');
+for (let key in appData) {
+  console.log(key + ' : \t' + appData[key] + '\n');
+}
 let missionAccomplished = Math.ceil(appData.mission / appData.budgetMonth);
 let accumulatedMonth = appData.budget - appData.expensesMonth;
-console.log('accumulatedMonth: ', accumulatedMonth);
-console.log('appData.money: ', appData.budget);
-console.log('Расходы за месяц: ', appData.expensesMonth);
 console.log('getTargetMonth: ', appData.getTargetMonth(appData.mission, accumulatedMonth));
 
 
