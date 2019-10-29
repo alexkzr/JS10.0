@@ -4,10 +4,7 @@ let book = document.querySelectorAll('.book');
 let bookLink = document.querySelectorAll('.book h2 a');
 let bookList = document.querySelectorAll('.book ul');
 let bookListItem0 = bookList[0].querySelectorAll('.book ul li');
-let bookListItem1 = bookList[1].querySelectorAll('.book ul li');
 let bookListItem2 = bookList[2].querySelectorAll('.book ul li');
-let bookListItem3 = bookList[3].querySelectorAll('.book ul li');
-let bookListItem4 = bookList[4].querySelectorAll('.book ul li');
 let bookListItem5 = bookList[5].querySelectorAll('.book ul li');
 
 const body = document.querySelector('body');
@@ -26,6 +23,7 @@ body.removeChild(adv);
 //восстановить порядок глав во второй книге
 bookList[0].insertBefore(bookListItem0[6], bookListItem0[4]);
 bookList[0].insertBefore(bookListItem0[8], bookListItem0[4]);
+bookList[0].insertBefore(bookListItem0[2], bookListItem0[10]);
 //восстановить порядок глав в пятой книге
 bookList[5].insertBefore(bookListItem5[9], bookListItem5[2]);
 bookList[5].insertBefore(bookListItem5[3], bookListItem5[2]);
