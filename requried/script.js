@@ -13,7 +13,6 @@ const adv = document.querySelector('.adv');
 books.insertBefore(book[1], book[0]);
 books.insertBefore(book[4], book[2]);
 books.insertBefore(book[2], null);
-console.log('book', book);
 //Заменить картинку заднего фона на другую из папки image
 body.style = 'background-image: url(image/you-dont-know-js.jpg);'
 //исправить название третьей книги
@@ -35,4 +34,3 @@ const chapter8 = document.createElement('li');
 chapter8.textContent = 'Глава 8: За пределами ES6';
 bookList[2].appendChild(chapter8);
 bookList[2].insertBefore(bookListItem2[9], null);
-console.log(bookListItem2);
