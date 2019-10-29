@@ -33,8 +33,9 @@ let appData = {
       do { value = prompt('Во сколько это обойдется?', 1000); }
       while (isNaN(value) || value === '' || value == null);
 
+      appData.expenses[key] = value;
     }
-    appData.expenses[key] = value;
+    console.log('appData.expenses:', appData.expenses);
     for (let key in appData.expenses) {
       result += +appData.expenses[key];
     }
