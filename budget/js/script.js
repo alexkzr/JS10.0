@@ -1,0 +1,26 @@
+'use strict';
+
+const submitButton = document.getElementById('start');
+console.log('submitButton: ', submitButton);
+const plus1 = document.getElementsByTagName('button')[0];
+console.log('plus1: ', plus1);
+const plus2 = document.getElementsByTagName('button')[1];
+console.log('plus2: ', plus2);
+const checkbox = document.querySelector('#deposit-check');
+console.log('checkbox: ', checkbox);
+let addIncome = document.querySelectorAll('.additional_income-item');
+console.log('addIncome: ', addIncome);
+let budgetMonthValue = document.querySelector('.budget_month-value');
+console.log('budgetMonthValue: ', budgetMonthValue);
+let budgetDayValue = document.querySelector('.budget_day-value');
+console.log('budgetDayValue: ', budgetDayValue);
+let expensesMonthValue = document.querySelector('.expenses_month-value');
+console.log('expensesMonthValue: ', expensesMonthValue);
+let addIncomeValue = document.querySelector('.additional_income-value');
+console.log('addIncomeValue: ', addIncomeValue);
+let addExpensesValue = document.querySelector('.additional_expenses-value');
+console.log('addExpensesValue: ', addExpensesValue);
+let incomePeriodValue = document.querySelector('.income_period-value');
+console.log('incomePeriodValue: ', incomePeriodValue);
+let targetMonthValue = document.querySelector('.target_month-value');
+console.log('targetMonthValue: ', targetMonthValue);
