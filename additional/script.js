@@ -17,9 +17,9 @@ function showTime() {
   let minute = addZero(date.getMinutes());
   let seconds = addZero(date.getSeconds());
   let displayDate = day + '.' + month + '.' + year;
-  let time = hour + '.' + minute + '.' + seconds;
+  let time = hour + ':' + minute + ':' + seconds;
 
-  result.innerHTML = displayDate + ' ' + time;
+  result.innerHTML = time + ' ' + displayDate;
   setTimeout(function () {
     showTime();
   }, 500)
