@@ -54,11 +54,11 @@ document.addEventListener('DOMContentLoaded', function () {
       appData.budget = salaryAmount.value;
       console.log('salaryAmount.value: ', salaryAmount.value);
       appData.getExpenses();
-      // appData.asking();
-      appData.getBudget();
       appData.getAddExpenses();
       appData.getAddIncome();
+      // appData.asking();
       appData.getIncome();
+      appData.getBudget();
       // appData.calcPeriod();
       appData.showResult();
     },
@@ -93,16 +93,12 @@ document.addEventListener('DOMContentLoaded', function () {
     getIncome: function () {
       incomeItems.forEach(function (item) {
         let itemIncome = item.querySelector('.income-title').value;
-        console.log('itemIncome: ', itemIncome);
         let cashIncome = item.querySelector('.income-amount').value;
-        console.log('cashIncome: ', cashIncome);
         if (itemIncome !== '' && cashIncome !== '') {
           appData.income[itemIncome] = cashIncome;
-          console.log('appData.income: ', appData.income);
         }
         for (let key in appData.income) {
           appData.incomeMonth += +appData.income[key];
-          console.log('appData.income[key]: ', appData.income[key]);
         }
       });
     },
