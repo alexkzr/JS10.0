@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
       additionalExpValue.value = this.addExpenses.join(', ');
       addIncomeValue.value = this.addIncome.join(', ');
       targetMonthValue.value = this.getTargetMonth();
-      periodSelect.addEventListener('change', this.calcPeriod);
     },
     addExpensesBlock: function () {
 
@@ -79,6 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (expensesItems.length === 3) {
         expensesPlus.style.display = 'none';
       }
+      placeholders();
     },
     addIncomeBlock: function () {
 
@@ -91,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (incomeItems.length === 3) {
         incomePlus.style.display = 'none';
       }
+      placeholders();
     },
     getExpenses: function () {
       expensesItems.forEach(function (item) {
@@ -107,9 +108,12 @@ document.addEventListener('DOMContentLoaded', function () {
         let cashIncome = item.querySelector('.income-amount').value;
         if (itemIncome !== '' && cashIncome !== '') {
           appData.income[itemIncome] = cashIncome;
+          console.log('appData.income: ', appData.income);
+          console.log('cashIncome: ', cashIncome);
         }
         for (let key in appData.income) {
           appData.incomeMonth += +appData.income[key];
+          console.log('appData.incomeMonth: ', appData.incomeMonth);
         }
       });
     },
@@ -191,36 +195,41 @@ document.addEventListener('DOMContentLoaded', function () {
       submitButton.style.display = 'block';
     },
     check: function () {
-      if (salaryAmount.value !== 0) {
-        submitButton.addEventListener('click', appData.submit);
+      if (salaryAmount.value != null || salaryAmount.value !== ' ') {
+        submitButton.addEventListener('click', hardbind);
       }
     },
-    submit: function (e) {
-      e.preventDefault();
-      appData.start();
+    submit: function () {
+      console.log('salaryAmount.value: ', salaryAmount.value);
+      this.start();
       let inputs = document.querySelectorAll('input[type=text');
       for (let i = 0; i < inputs.length; i++) {
         inputs[i].setAttribute("disabled", "disabled");
       }
       cancel.style.display = 'block';
       submitButton.style.display = 'none';
-    }
+    },
+
 
   };
-
-  let inputNames = document.querySelectorAll('input');
-  for (let i = 0; i < inputNames.length; i++) {
-    if (inputNames[i].placeholder === 'Наименование') {
-      inputNames[i].addEventListener('input', () => {
-        inputNames[i].value = inputNames[i].value.replace(/[^а-я]/, '');
-      });
-    } else if (inputNames[i].placeholder === 'Сумма') {
-      inputNames[i].addEventListener('input', () => {
-        inputNames[i].value = inputNames[i].value.replace(/[^0-9+$]/, '');
-      });
+  function placeholders() {
+    let inputNames = document.querySelectorAll('input');
+    for (let i = 0; i < inputNames.length; i++) {
+      if (inputNames[i].placeholder === 'Наименование') {
+        inputNames[i].addEventListener('input', () => {
+          inputNames[i].value = inputNames[i].value.replace(/[^а-я]/, '');
+        });
+      } else if (inputNames[i].placeholder === 'Сумма') {
+        inputNames[i].addEventListener('input', () => {
+          inputNames[i].value = inputNames[i].value.replace(/[^0-9+$]/, '');
+        });
+      }
     }
-  }
+  };
+  let hardbind = appData.submit.bind(appData);
 
+  placeholders();
+  periodSelect.addEventListener('change', appData.calcPeriod);
   salaryAmount.addEventListener('input', appData.check);
   cancel.addEventListener('click', appData.reset);
   expensesPlus.addEventListener('click', appData.addExpensesBlock);
