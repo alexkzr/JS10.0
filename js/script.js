@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const submitButton = document.getElementById('start');
   const incomePlus = document.getElementsByTagName('button')[0];
   const expensesPlus = document.getElementsByTagName('button')[1];
-  const checkbox = document.querySelector('#deposit-check');
+  const depositCheck = document.querySelector('#deposit-check');
   let addIncome = document.querySelectorAll('.additional_income-item'),
     budgetMonthValue = document.querySelector('.budget_month-value'),
     budgetDayValue = document.querySelector('.budget_day-value'),
@@ -51,10 +51,11 @@ document.addEventListener('DOMContentLoaded', function () {
       this.budget = +salaryAmount.value;
       this.getExpenses();
       this.getIncome();
+      this.getBudget();
       this.getExpensesMonth();
       this.getAddExpenses();
       this.getAddIncome();
-      this.getBudget();
+      this.calcPeriod();
       this.getStatusIncome();
 
       this.showResult();
@@ -108,12 +109,10 @@ document.addEventListener('DOMContentLoaded', function () {
         let cashIncome = item.querySelector('.income-amount').value;
         if (itemIncome !== '' && cashIncome !== '') {
           appData.income[itemIncome] = cashIncome;
-          console.log('appData.income: ', appData.income);
-          console.log('cashIncome: ', cashIncome);
         }
+        appData.incomeMonth = 0;
         for (let key in appData.income) {
           appData.incomeMonth += +appData.income[key];
-          console.log('appData.incomeMonth: ', appData.incomeMonth);
         }
       });
     },
@@ -128,6 +127,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     getBudget: function () {
       this.budgetMonth = this.budget + this.incomeMonth - this.getExpensesMonth();
+      console.log('this.getExpensesMonth(): ', this.getExpensesMonth());
+      console.log('this.incomeMonth: ', this.incomeMonth);
+      console.log('this.budget: ', this.budget);
+      console.log(' this.budgetMonth: ', this.budgetMonth);
       this.budgetDay = Math.ceil(Math.floor(this.budgetMonth / 30));
     },
     getTargetMonth: function () {
@@ -171,16 +174,17 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     },
     getInfoDeposit: function () {
-      if (this.deposit) {
+      if (depositCheck.checked) {
         this.percentageDeposit = prompt('Какой годовой процент?', '10');
         do { this.moneyDeposit = prompt('Какая сумма заложена?', 10000); }
         while (isNaN(this.moneyDeposit) || this.moneyDeposit === '' || this.moneyDeposit === null);
       }
     },
     calcPeriod: function () {
-      console.log('range changed');
       periodAmount.textContent = periodSelect.value;
-      incomePeriodValue.value = this.budgetMonth * periodSelect.value;
+      incomePeriodValue.value = appData.budgetMonth * periodSelect.value;
+      console.log('periodSelect.value: ', periodSelect.value);
+      console.log('appData.budgetMonth: ', appData.budgetMonth);
     },
     changePeriod: function () {
       periodAmount.textContent = periodSelect.value;
@@ -193,6 +197,10 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       cancel.style.display = 'none';
       submitButton.style.display = 'block';
+      addIncomeValue.value = '';
+      appData.addIncome = [];
+      appData.income = {};
+      appData.incomeMonth = 0;
     },
     check: function () {
       if (salaryAmount.value != null || salaryAmount.value !== ' ') {
@@ -200,14 +208,15 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     },
     submit: function () {
-      console.log('salaryAmount.value: ', salaryAmount.value);
-      this.start();
-      let inputs = document.querySelectorAll('input[type=text');
-      for (let i = 0; i < inputs.length; i++) {
-        inputs[i].setAttribute("disabled", "disabled");
+      if (+salaryAmount.value > 0 || salaryAmount.value != '') {
+        this.start();
+        let inputs = document.querySelectorAll('input[type=text');
+        for (let i = 0; i < inputs.length; i++) {
+          inputs[i].setAttribute("disabled", "disabled");
+        }
+        cancel.style.display = 'block';
+        submitButton.style.display = 'none';
       }
-      cancel.style.display = 'block';
-      submitButton.style.display = 'none';
     },
 
 
@@ -236,6 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
   incomePlus.addEventListener('click', appData.addIncomeBlock);
 
 
-  appData.getInfoDeposit();
+
 
 });
