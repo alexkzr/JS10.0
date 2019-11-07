@@ -16,7 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
     cancel = document.getElementById('cancel'),
     depositBank = document.querySelector('.deposit-bank'),
     depositAmount = document.querySelector('.deposit-amount'),
-    depositPercent = document.querySelector('.deposit-percent');
+    depositPercent = document.querySelector('.deposit-percent'),
+    incomeBlock = document.querySelector('.income'),
+    expensesBlock = document.querySelector('.expenses');
+
+
 
 
 
@@ -59,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     addExpIncBlock(selector, button) {
       const _this = this;
       let cloneExpensesItem = selector[0].cloneNode(true);
+      cloneExpensesItem.classList.add('extra');
       selector[0].parentNode.insertBefore(cloneExpensesItem, button);
       if (selector === expensesItems) {
         selector = document.querySelectorAll('.expenses-items');
@@ -253,11 +258,17 @@ document.addEventListener('DOMContentLoaded', function () {
         inputs[i].value = '';
       }
       cancel.style.display = 'none';
-      submitButton.style.display = 'block';
       addIncomeValue.value = '';
       _this.addIncome = [];
       _this.income = {};
       _this.incomeMonth = 0;
+      submitButton.style.display = 'block';
+      var p = document.querySelectorAll('.extra');
+      for (var i = 0; i < p.length; i++) {
+        p[i].parentNode.removeChild(p[i]);
+      }
+      incomePlus.style.display = 'block';
+      expensesPlus.style.display = 'block';
     }
     check() {
       if (salaryAmount.value != null || salaryAmount.value !== ' ') {
@@ -310,8 +321,8 @@ document.addEventListener('DOMContentLoaded', function () {
       periodSelect.addEventListener('change', this.calcPeriod);
       salaryAmount.addEventListener('input', this.check);
       cancel.addEventListener('click', this.reset);
-      expensesPlus.addEventListener('click', function () { appData.addExpIncBlock(expensesItems, expensesPlus) }, false);
-      incomePlus.addEventListener('click', function () { appData.addExpIncBlock(incomeItems, incomePlus) }, false);
+      expensesPlus.addEventListener('click', function () { appData.addExpIncBlock(expensesItems, expensesPlus); }, false);
+      incomePlus.addEventListener('click', function () { appData.addExpIncBlock(incomeItems, incomePlus); }, false);
       // incomePlus.addEventListener('click', this.addIncomeBlock);
       depositCheck.addEventListener('change', this.getDeposit);
     }
