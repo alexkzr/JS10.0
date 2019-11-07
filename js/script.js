@@ -3,8 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const submitButton = document.getElementById('start');
   const incomePlus = document.getElementsByTagName('button')[0];
   const expensesPlus = document.getElementsByTagName('button')[1];
-  const depositCheck = document.querySelector('#deposit-check');
-  let addIncome = document.querySelectorAll('.additional_income-item'),
+  const depositCheck = document.querySelector('#deposit-check'),
     budgetMonthValue = document.querySelector('.budget_month-value'),
     budgetDayValue = document.querySelector('.budget_day-value'),
     expensesMonthValue = document.querySelector('.expenses_month-value'),
@@ -12,23 +11,27 @@ document.addEventListener('DOMContentLoaded', function () {
     addExpensesValue = document.querySelector('.additional_expenses-value'),
     incomePeriodValue = document.querySelector('.income_period-value'),
     targetMonthValue = document.querySelector('.target_month-value'),
-    salaryAmount = document.querySelector('.salary-amount'),
-    incomeTitle = document.querySelector('.income-title'),
-    incomeAmount = document.querySelector('.income-amount'),
-    additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
     expensesTitle = document.querySelector('.expenses-title'),
-    expensesAmount = document.querySelector('.expenses-amount'),
-    additionalExpItem = document.querySelector('.additional_expenses-item'),
     additionalExpValue = document.querySelector('.additional_expenses-value'),
-    targetAmount = document.querySelector('.target-amount'),
-    expensesItems = document.querySelectorAll('.expenses-items'),
-    periodSelect = document.querySelector('.period-select'),
-    periodAmount = document.querySelector('.period-amount'),
-    incomeItems = document.querySelectorAll('.income-items'),
     cancel = document.getElementById('cancel'),
     depositBank = document.querySelector('.deposit-bank'),
     depositAmount = document.querySelector('.deposit-amount'),
     depositPercent = document.querySelector('.deposit-percent');
+
+
+
+  let addIncome = document.querySelectorAll('.additional_income-item'),
+    salaryAmount = document.querySelector('.salary-amount'),
+    incomeTitle = document.querySelector('.income-title'),
+    incomeAmount = document.querySelector('.income-amount'),
+    additionalIncomeItem = document.querySelectorAll('.additional_income-item'),
+    expensesAmount = document.querySelector('.expenses-amount'),
+    additionalExpItem = document.querySelector('.additional_expenses-item'),
+    targetAmount = document.querySelector('.target-amount'),
+    expensesItems = document.querySelectorAll('.expenses-items'),
+    periodSelect = document.querySelector('.period-select'),
+    periodAmount = document.querySelector('.period-amount'),
+    incomeItems = document.querySelectorAll('.income-items');
 
   class AppData {
     constructor() {

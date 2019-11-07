@@ -33,7 +33,7 @@ class DomElement {
     bottom: ${this.bottom};
     left: ${this.left};
     right: ${this.right};
-    `
+    `;
   }
 }
 const cssText = new DomElement('#something', '100px', '100px', 'mediumseagreen', 23, { position: 'absolute' });
