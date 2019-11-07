@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', function(){
 class DomElement {
   constructor(selector, height, width, bg, fontSize, options) {
     this.selector = selector;
@@ -89,3 +90,4 @@ function checkKey(e) {
 }
 
 cssText.create();
+})
