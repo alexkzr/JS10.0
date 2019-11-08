@@ -240,9 +240,6 @@ document.addEventListener('DOMContentLoaded', function () {
     calcPeriod() {
       periodAmount.textContent = periodSelect.value;
       incomePeriodValue.value = this.budgetMonth * periodSelect.value;
-      console.log('incomePeriodValue.value: ', incomePeriodValue.value);
-      console.log('_this.budgetMonth: ', this.budgetMonth);
-
     }
     changePeriod() {
       periodAmount.textContent = periodSelect.value;
@@ -330,10 +327,18 @@ document.addEventListener('DOMContentLoaded', function () {
   const appData = new AppData();
   let bindCalc = appData.calcPeriod.bind(appData);
   let bindReset = appData.reset.bind(appData);
+  let hardbind = appData.submit.bind(appData);
 
   appData.placeholders();
   appData.eventListeners();
-  let hardbind = appData.submit.bind(appData);
 
 
 });
+/*
+1) Необходимо сохранять данные при перезагрузки страницы или после закрытия браузера. Для этого нам понадобиться cookie и localStorage
+(ВНИМАНИЕ! Cookie будут сохраняться только если вы запускаете проект с сервера, то есть в адресной строке должно быть http:// или https://)
+2) После нажатия кнопки Рассчитать, данные из правой части записываем в созданный вами localStorage и cookie(+ еще одну куку isLoad, которую нужно приравнять к true), для каждого значения отдельная куки.
+3) При перезагрзки вставляются уже в правую часть. Левая часть так же остается заблокированной.
+4) Если нажимаем сбросить, то из локального хранилища удаляется все
+5) При выходе из браузера, перезагрузке все данные должны возвращаться на свои места (если они там были)
+6) Если пользователь удаляет хотя бы одну из кук или она не соответствует тому, что хранинься в локал (кука name должна равнятся свойству name в локальном хранилище), тогда принудительно удаляем наши куки и локальное хранилище и программа запускается ПОЛНОСТЬЮ заново. (очищается объект от данных)*/
