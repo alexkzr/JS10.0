@@ -189,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
     getAddBlock(selector) {
       const _this = this;
       if (selector === additionalExpItem) {
-        console.log('selector: ', selector);
         selector = selector.value.split(',');
         selector.forEach(function (item) {
           item = item.trim();
@@ -229,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function () {
             depositPercent.style.display = 'none';
             depositPercent.value = selectIndex;
           }
-          console.log(' depositPercent.value: ', depositPercent.value);
         });
       }
       else {
@@ -241,13 +239,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     calcPeriod() {
       periodAmount.textContent = periodSelect.value;
-      incomePeriodValue.value = appData.budgetMonth * periodSelect.value;
+      incomePeriodValue.value = this.budgetMonth * periodSelect.value;
+      console.log('incomePeriodValue.value: ', incomePeriodValue.value);
+      console.log('_this.budgetMonth: ', this.budgetMonth);
+
     }
     changePeriod() {
       periodAmount.textContent = periodSelect.value;
     }
-    reset(e) {
-      const _this = this;
+    reset() {
       let inputs = document.querySelectorAll('input[type=text');
       for (let i = 0; i < inputs.length; i++) {
         inputs[i].removeAttribute("disabled", "disabled");
@@ -255,9 +255,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       cancel.style.display = 'none';
       addIncomeValue.value = '';
-      _this.addIncome = [];
-      _this.income = {};
-      _this.incomeMonth = 0;
+      this.addIncome = [];
+      this.income = {};
+      this.incomeMonth = 0;
+      appData.budgetMonth = 0;
+      incomePeriodValue.value = 0;
       submitButton.style.display = 'block';
       var p = document.querySelectorAll('.extra');
       for (var i = 0; i < p.length; i++) {
@@ -314,9 +316,9 @@ document.addEventListener('DOMContentLoaded', function () {
       this.showResult();
     }
     eventListeners() {
-      periodSelect.addEventListener('change', this.calcPeriod);
+      periodSelect.addEventListener('change', bindCalc);
       salaryAmount.addEventListener('input', this.check);
-      cancel.addEventListener('click', this.reset);
+      cancel.addEventListener('click', bindReset);
       expensesPlus.addEventListener('click', function () { appData.addExpIncBlock(expensesItems, expensesPlus); }, false);
       incomePlus.addEventListener('click', function () { appData.addExpIncBlock(incomeItems, incomePlus); }, false);
       // incomePlus.addEventListener('click', this.addIncomeBlock);
@@ -326,6 +328,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   const appData = new AppData();
+  let bindCalc = appData.calcPeriod.bind(appData);
+  let bindReset = appData.reset.bind(appData);
+
   appData.placeholders();
   appData.eventListeners();
   let hardbind = appData.submit.bind(appData);
