@@ -189,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
     getAddBlock(selector) {
       const _this = this;
       if (selector === additionalExpItem) {
-        console.log('selector: ', selector);
         selector = selector.value.split(',');
         selector.forEach(function (item) {
           item = item.trim();
@@ -229,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function () {
             depositPercent.style.display = 'none';
             depositPercent.value = selectIndex;
           }
-          console.log(' depositPercent.value: ', depositPercent.value);
         });
       }
       else {
@@ -240,18 +238,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
     calcPeriod() {
-      const _this = this;
       periodAmount.textContent = periodSelect.value;
-      incomePeriodValue.value = _this.budgetMonth * periodSelect.value;
-      console.log('_this.budgetMonth: ', _this.budgetMonth);
-      console.log('periodSelect.value: ', periodSelect.value);
-      console.log('incomePeriodValue.value: ', incomePeriodValue.value);
+      incomePeriodValue.value = this.budgetMonth * periodSelect.value;
     }
     changePeriod() {
       periodAmount.textContent = periodSelect.value;
     }
-    reset(e) {
-      const _this = this;
+    reset() {
       let inputs = document.querySelectorAll('input[type=text');
       for (let i = 0; i < inputs.length; i++) {
         inputs[i].removeAttribute("disabled", "disabled");
@@ -259,9 +252,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       cancel.style.display = 'none';
       addIncomeValue.value = '';
-      _this.addIncome = [];
-      _this.income = {};
-      _this.incomeMonth = 0;
+      this.addIncome = [];
+      this.income = {};
+      this.incomeMonth = 0;
+      appData.budgetMonth = 0;
+      incomePeriodValue.value = 0;
       submitButton.style.display = 'block';
       var p = document.querySelectorAll('.extra');
       for (var i = 0; i < p.length; i++) {
@@ -318,9 +313,9 @@ document.addEventListener('DOMContentLoaded', function () {
       this.showResult();
     }
     eventListeners() {
-      periodSelect.addEventListener('change', this.calcPeriod);
+      periodSelect.addEventListener('change', bindCalc);
       salaryAmount.addEventListener('input', this.check);
-      cancel.addEventListener('click', this.reset);
+      cancel.addEventListener('click', bindReset);
       expensesPlus.addEventListener('click', function () { appData.addExpIncBlock(expensesItems, expensesPlus); }, false);
       incomePlus.addEventListener('click', function () { appData.addExpIncBlock(incomeItems, incomePlus); }, false);
       // incomePlus.addEventListener('click', this.addIncomeBlock);
@@ -330,9 +325,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   const appData = new AppData();
+  let bindCalc = appData.calcPeriod.bind(appData);
+  let bindReset = appData.reset.bind(appData);
+  let hardbind = appData.submit.bind(appData);
+
   appData.placeholders();
   appData.eventListeners();
-  let hardbind = appData.submit.bind(appData);
 
 
 });
+/*
+1) Необходимо сохранять данные при перезагрузки страницы или после закрытия браузера. Для этого нам понадобиться cookie и localStorage
+(ВНИМАНИЕ! Cookie будут сохраняться только если вы запускаете проект с сервера, то есть в адресной строке должно быть http:// или https://)
+2) После нажатия кнопки Рассчитать, данные из правой части записываем в созданный вами localStorage и cookie(+ еще одну куку isLoad, которую нужно приравнять к true), для каждого значения отдельная куки.
+3) При перезагрзки вставляются уже в правую часть. Левая часть так же остается заблокированной.
+4) Если нажимаем сбросить, то из локального хранилища удаляется все
+5) При выходе из браузера, перезагрузке все данные должны возвращаться на свои места (если они там были)
+6) Если пользователь удаляет хотя бы одну из кук или она не соответствует тому, что хранинься в локал (кука name должна равнятся свойству name в локальном хранилище), тогда принудительно удаляем наши куки и локальное хранилище и программа запускается ПОЛНОСТЬЮ заново. (очищается объект от данных)*/
