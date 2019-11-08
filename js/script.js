@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
       return result;
     }
     getBudget() {
-      this.budgetMonth = this.budget + this.incomeMonth - this.getExpensesMonth() + (this.moneyDeposit * this.percentageDeposit) / 12;
+      this.budgetMonth = this.budget + this.incomeMonth - this.getExpensesMonth() + Math.ceil(this.moneyDeposit * this.percentageDeposit / 12);
       this.budgetDay = Math.ceil(Math.floor(this.budgetMonth / 30));
     }
     getTargetMonth() {
@@ -165,27 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return ('Что-то пошло не так');
       }
     }
-    /*
-    getAddExpenses() {
-      const _this = this;
-      let addExpenses = additionalExpItem.value.split(',');
-      addExpenses.forEach(function (item) {
-        item = item.trim();
-        if (item !== '') {
-          _this.addExpenses.push(item);
-        }
-      });
-    }
-    getAddIncome() {
-      const _this = this;
-      additionalIncomeItem.forEach(function (item) {
-        let itemValue = item.value.trim();
-        if (itemValue !== '') {
-          _this.addIncome.push(itemValue);
-        }
-      });
-    }
-    */
+
     getAddBlock(selector) {
       const _this = this;
       if (selector === additionalExpItem) {
