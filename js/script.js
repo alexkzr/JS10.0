@@ -240,12 +240,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
     calcPeriod() {
-      const _this = this;
       periodAmount.textContent = periodSelect.value;
-      incomePeriodValue.value = _this.budgetMonth * periodSelect.value;
-      console.log('_this.budgetMonth: ', _this.budgetMonth);
-      console.log('periodSelect.value: ', periodSelect.value);
-      console.log('incomePeriodValue.value: ', incomePeriodValue.value);
+      incomePeriodValue.value = appData.budgetMonth * periodSelect.value;
     }
     changePeriod() {
       periodAmount.textContent = periodSelect.value;
