@@ -11,9 +11,9 @@ window.addEventListener('DOMContentLoaded', function () {
       let dateStop = new Date(deadline).getTime(),
         dateNow = new Date().getTime(),
         timeRemaining = (dateStop - dateNow) / 1000,
-        seconds = Math.floor(timeRemaining % 60),
-        minutes = Math.floor((timeRemaining / 60) % 60),
-        hours = Math.floor(timeRemaining / 60 / 60);
+        seconds = ('0' + Math.floor(timeRemaining % 60)).slice(-2),
+        minutes = ('0' + Math.floor((timeRemaining / 60) % 60)).slice(-2),
+        hours = ('0' + Math.floor(timeRemaining / 60 / 60)).slice(-2);
 
       return { timeRemaining, hours, minutes, seconds };
     }
@@ -26,12 +26,12 @@ window.addEventListener('DOMContentLoaded', function () {
       if (timer.timeRemaining > 0) {
         setInterval(updateClock, 1000);
       } else if (timer.timeRemaining < 0) {
-        timerHours.textContent = 0;
-        timerMinutes.textContent = 0;
-        timerSeconds.textContent = 0;
+        timerHours.textContent = '00';
+        timerMinutes.textContent = '00';
+        timerSeconds.textContent = '00';
       }
     }
     updateClock();
   }
-  countTimer('09 november 2019');
+  countTimer('10 november 2019');
 });
