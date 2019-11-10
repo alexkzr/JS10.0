@@ -231,12 +231,19 @@ document.addEventListener('DOMContentLoaded', function () {
         inputs[i].value = '';
       }
       cancel.style.display = 'none';
-      addIncomeValue.value = '';
-      this.addIncome = [];
-      this.income = {};
-      this.incomeMonth = 0;
+      appData.income = {};
+      appData.addIncome = [];
+      appData.expenses = {};
+      appData.addExpenses = [];
+      appData.deposit = false;
+      appData.percentageDeposit = 0;
+      appData.incomeMonth = 0;
+      appData.moneyDeposit = 0;
+      appData.budget = 0;
+      appData.expensesMonth = 0;
       appData.budgetMonth = 0;
-      incomePeriodValue.value = 0;
+      appData.budgetDay = 0;
+
       submitButton.style.display = 'block';
       var p = document.querySelectorAll('.extra');
       for (var i = 0; i < p.length; i++) {
