@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (itemIncome !== '' && cashIncome !== '') {
           _this.income[itemIncome] = cashIncome;
         }
-        _this.incomeMonth = 0;
+        // _this.incomeMonth = 0;
         for (let key in _this.income) {
           _this.incomeMonth += +_this.income[key];
         }
@@ -140,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     getBudget() {
       this.budgetMonth = this.budget + this.incomeMonth - this.getExpensesMonth() + Math.ceil(this.moneyDeposit * this.percentageDeposit / 12);
+      console.log('budgetMonth: ', this.budgetMonth);
       this.budgetDay = Math.ceil(Math.floor(this.budgetMonth / 30));
     }
     getTargetMonth() {
@@ -267,6 +268,18 @@ document.addEventListener('DOMContentLoaded', function () {
         cancel.style.display = 'block';
         submitButton.style.display = 'none';
       }
+      localStorage.income = appData.income;
+      localStorage.addIncome = appData.addIncome;
+      localStorage.expenses = appData.expenses;
+      localStorage.addExpenses = appData.addExpenses;
+      localStorage.deposit = appData.deposit;
+      localStorage.percentageDeposit = appData.percentageDeposit;
+      localStorage.incomeMonth = appData.incomeMonth;
+      localStorage.moneyDeposit = appData.moneyDeposit;
+      localStorage.budget = appData.budget;
+      localStorage.expensesMonth = appData.expensesMonth;
+      localStorage.budgetMonth = appData.budgetMonth;
+      appData.budgetDay = 0;
     }
     placeholders() {
       let inputNames = document.querySelectorAll('input');
