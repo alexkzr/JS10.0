@@ -24,14 +24,17 @@ window.addEventListener('DOMContentLoaded', function () {
       timerMinutes.textContent = timer.minutes;
       timerSeconds.textContent = timer.seconds;
       if (timer.timeRemaining > 0) {
-        setInterval(updateClock, 1000);
+        return true;
       } else if (timer.timeRemaining < 0) {
         timerHours.textContent = '00';
         timerMinutes.textContent = '00';
         timerSeconds.textContent = '00';
       }
     }
-    updateClock();
+	console.log(updateClock());
+	if(updateClock()){
+		setInterval(updateClock, 1000);
+	}
   }
-  countTimer('10 november 2019');
+  countTimer('12 november 2019');
 });
