@@ -78,34 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       _this.placeholders();
     }
-    /*
-    addExpensesBlock() {
-      const _this = this;
-      let cloneExpensesItem = expensesItems[0].cloneNode(true);
-      expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesPlus);
-      expensesItems = document.querySelectorAll('.expenses-items');
-      for (let i = 0; i < cloneExpensesItem.childNodes.length; i++) {
-        cloneExpensesItem.childNodes[i].value = '';
-      }
-      if (expensesItems.length === 3) {
-        expensesPlus.style.display = 'none';
-      }
-      _this.placeholders();
-    }
-    addIncomeBlock() {
-      const _this = this;
-      let cloneIncomeItem = incomeItems[0].cloneNode(true);
-      incomeItems[0].parentNode.insertBefore(cloneIncomeItem, incomePlus);
-      incomeItems = document.querySelectorAll('.income-items');
-      for (let i = 0; i < cloneIncomeItem.childNodes.length; i++) {
-        cloneIncomeItem.childNodes[i].value = '';
-      }
-      if (incomeItems.length === 3) {
-        incomePlus.style.display = 'none';
-      }
-      _this.placeholders();
-    }
-    */
+
     getExpenses() {
       const _this = this;
       expensesItems.forEach(function (item) {
@@ -113,8 +86,14 @@ document.addEventListener('DOMContentLoaded', function () {
         let cashExpenses = item.querySelector('.expenses-amount').value;
         if (itemExpenses !== '' && cashExpenses !== '') {
           _this.expenses[itemExpenses] = cashExpenses;
+          console.log('_this.expenses: ', _this.expenses);
         }
       });
+      _this.expensesMonth = 0;
+      for (let key in _this.expenses) {
+        _this.expensesMonth += +_this.expenses[key];
+      }
+      console.log('expensesMonth: ', _this.expensesMonth);
     }
     getIncome() {
       const _this = this;
@@ -124,22 +103,14 @@ document.addEventListener('DOMContentLoaded', function () {
         if (itemIncome !== '' && cashIncome !== '') {
           _this.income[itemIncome] = cashIncome;
         }
-        // _this.incomeMonth = 0;
-        for (let key in _this.income) {
-          _this.incomeMonth += +_this.income[key];
-        }
+        _this.incomeMonth = 0;
       });
-    }
-    getExpensesMonth() {
-      let result = 0;
-      for (let key in this.expenses) {
-        result += +this.expenses[key];
+      for (let key in _this.income) {
+        _this.incomeMonth += +_this.income[key];
       }
-      this.expensesMonth = result;
-      return result;
     }
     getBudget() {
-      this.budgetMonth = this.budget + this.incomeMonth - this.getExpensesMonth() + Math.ceil(this.moneyDeposit * this.percentageDeposit / 12);
+      this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + Math.ceil(this.moneyDeposit * this.percentageDeposit / 12);
       console.log('budgetMonth: ', this.budgetMonth);
       this.budgetDay = Math.ceil(Math.floor(this.budgetMonth / 30));
     }
@@ -246,8 +217,8 @@ document.addEventListener('DOMContentLoaded', function () {
       appData.budgetDay = 0;
 
       submitButton.style.display = 'block';
-      var p = document.querySelectorAll('.extra');
-      for (var i = 0; i < p.length; i++) {
+      let p = document.querySelectorAll('.extra');
+      for (let i = 0; i < p.length; i++) {
         p[i].parentNode.removeChild(p[i]);
       }
       incomePlus.style.display = 'block';
@@ -303,9 +274,6 @@ document.addEventListener('DOMContentLoaded', function () {
       this.getIncome();
       this.getInfoDeposit();
       this.getBudget();
-      this.getExpensesMonth();
-      // this.getAddExpenses();
-      // this.getAddIncome();
       this.getAddBlock(additionalIncomeItem);
       this.getAddBlock(additionalExpItem);
       this.calcPeriod();
@@ -318,7 +286,6 @@ document.addEventListener('DOMContentLoaded', function () {
       cancel.addEventListener('click', bindReset);
       expensesPlus.addEventListener('click', function () { appData.addExpIncBlock(expensesItems, expensesPlus); }, false);
       incomePlus.addEventListener('click', function () { appData.addExpIncBlock(incomeItems, incomePlus); }, false);
-      // incomePlus.addEventListener('click', this.addIncomeBlock);
       depositCheck.addEventListener('change', this.getDeposit);
     }
   }
