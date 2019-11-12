@@ -309,18 +309,20 @@ document.addEventListener('DOMContentLoaded', function () {
         // resultTotal[i].value = appData.getCookie(resultTitle[i]);
       }
     }
-    getStorage() {
-      const resultTotal = document.querySelectorAll('.result-total');
-      const resultTitle = document.querySelectorAll('.result div span.title');
-      for (let i = 0; i < resultTotal.length; i++) {
-        resultTotal[i].value = localStorage.getItem(resultTitle[i].textContent);
+   getStorage() {
+      if (localStorage.length > 0) {
+        const resultTotal = document.querySelectorAll('.result-total');
+        const resultTitle = document.querySelectorAll('.result div span.title');
+        for (let i = 0; i < resultTotal.length; i++) {
+          resultTotal[i].value = localStorage.getItem(resultTitle[i].textContent);
+        }
+        let inputs = document.querySelectorAll('input[type=text');
+        for (let i = 0; i < inputs.length; i++) {
+          inputs[i].setAttribute("disabled", "disabled");
+        }
+        cancel.style.display = 'block';
+        submitButton.style.display = 'none';
       }
-      let inputs = document.querySelectorAll('input[type=text');
-      for (let i = 0; i < inputs.length; i++) {
-        inputs[i].setAttribute("disabled", "disabled");
-      }
-      cancel.style.display = 'block';
-      submitButton.style.display = 'none';
     }
     clearStorage() {
       localStorage.clear();
