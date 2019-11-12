@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     periodSelect = document.querySelector('.period-select'),
     periodAmount = document.querySelector('.period-amount'),
     expensesItems = document.querySelectorAll('.expenses-items'),
+    intervalId,
     incomeItems = document.querySelectorAll('.income-items');
 
   class AppData {
@@ -246,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function () {
       incomePlus.style.display = 'block';
       expensesPlus.style.display = 'block';
       appData.clearStorage();
-      appData.clearCookies()
+      appData.clearCookies();
     }
     check() {
       if (salaryAmount.value != null || salaryAmount.value !== ' ') {
@@ -281,6 +282,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
     }
+    checkCookie(name) {
+      let dc = document.cookie;
+      let prefix = name + "=";
+      let begin = dc.indexOf("; " + prefix);
+      if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+      }
+      else {
+        begin += 2;
+        let end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+          end = dc.length;
+        }
+      }
+      // because unescape has been deprecated, replaced with decodeURI
+      //return unescape(dc.substring(begin + prefix.length, end));
+      return dc.substring(begin + prefix.length);
+    }
     setCookie(key, value, year, month, day) {
       let cookieStr = key + '=' + value;
       if (year) {
@@ -304,12 +324,31 @@ document.addEventListener('DOMContentLoaded', function () {
       const resultTitle = document.querySelectorAll('.result div span.title');
       for (let i = 0; i < resultTotal.length; i++) {
         this.setCookie(resultTitle[i].textContent, resultTotal[i].value, 2021, 1, 1);
+        if (this.checkCookie(resultTitle[i].textContent) !== null) {
+          console.log('all cookies in place')
+        } else {
+          console.log('something is missing');
+        }
         localStorage.setItem(resultTitle[i].textContent, resultTotal[i].value);
         resultTotal[i].value = localStorage.getItem(resultTitle[i].textContent);
         // resultTotal[i].value = appData.getCookie(resultTitle[i]);
       }
+      document.cookie = 'isLoad=true; expires=Tue, 7 May 2024 00:00:00 GMT';
     }
-   getStorage() {
+    cookieMatches() {
+      const resultTotal = document.querySelectorAll('.result-total');
+      const resultTitle = document.querySelectorAll('.result div span.title');
+      for (let i = 0; i < resultTotal.length; i++) {
+        if (appData.checkCookie(resultTitle[i].textContent) !== null) {
+          console.log('all cookies in place')
+        } else {
+          console.log('something is missing');
+          appData.clearCookies();
+          appData.clearStorage();
+        }
+      }
+    }
+    getStorage() {
       if (localStorage.length > 0) {
         const resultTotal = document.querySelectorAll('.result-total');
         const resultTitle = document.querySelectorAll('.result div span.title');
@@ -326,6 +365,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     clearStorage() {
       localStorage.clear();
+      let inputs = document.querySelectorAll('input[type=text');
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].removeAttribute("disabled", "disabled");
+        inputs[i].value = '';
+      }
+      cancel.style.display = 'none';
+      submitButton.style.display = 'block';
+      clearInterval(intervalId);
     }
     getCookie(name) {
       let matches = document.cookie.match(new RegExp(
@@ -333,6 +380,7 @@ document.addEventListener('DOMContentLoaded', function () {
       ));
       return matches;
     }
+
     start() {
       this.budget = +salaryAmount.value;
       this.placeholders();
@@ -346,6 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
       this.calcPeriod();
       this.getStatusIncome();
       this.showResult();
+      intervalId = setInterval(appData.cookieMatches, 2000);
     }
     eventListeners() {
       periodSelect.addEventListener('change', bindCalc);
