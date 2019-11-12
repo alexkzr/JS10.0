@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
     expensesAmount = document.querySelector('.expenses-amount'),
     additionalExpItem = document.querySelector('.additional_expenses-item'),
     targetAmount = document.querySelector('.target-amount'),
-    expensesItems = document.querySelectorAll('.expenses-items'),
     periodSelect = document.querySelector('.period-select'),
     periodAmount = document.querySelector('.period-amount'),
+    expensesItems = document.querySelectorAll('.expenses-items'),
     incomeItems = document.querySelectorAll('.income-items');
 
   class AppData {
@@ -87,6 +87,8 @@ document.addEventListener('DOMContentLoaded', function () {
           this[startStr][itemTitle] = itemAmount;
         }
       }
+      let expensesItems = document.querySelectorAll('.expenses-items'),
+        incomeItems = document.querySelectorAll('.income-items');
       expensesItems.forEach(count);
       incomeItems.forEach(count);
       for (let key in this.expenses) {
@@ -98,36 +100,36 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log(this);
     }
     /*
-    getExpenses() {
-      const _this = this;
-      expensesItems.forEach(function (item) {
-        let itemExpenses = item.querySelector(`.${startStr}-title`).value;
-        let cashExpenses = item.querySelector(`.${startStr}-amount`).value;
-        if (itemExpenses !== '' && cashExpenses !== '') {
-          _this.expenses[itemExpenses] = cashExpenses;
-          console.log('_this.expenses: ', _this.expenses);
+        getExpenses() {
+          const _this = this;
+          expensesItems.forEach(function (item) {
+            let itemExpenses = item.querySelector(`.${startStr}-title`).value;
+            let cashExpenses = item.querySelector(`.${startStr}-amount`).value;
+            if (itemExpenses !== '' && cashExpenses !== '') {
+              _this.expenses[itemExpenses] = cashExpenses;
+              console.log('_this.expenses: ', _this.expenses);
+            }
+          });
+          _this.expensesMonth = 0;
+          for (let key in _this.expenses) {
+            _this.expensesMonth += +_this.expenses[key];
+          }
+          console.log('expensesMonth: ', _this.expensesMonth);
         }
-      });
-      _this.expensesMonth = 0;
-      for (let key in _this.expenses) {
-        _this.expensesMonth += +_this.expenses[key];
-      }
-      console.log('expensesMonth: ', _this.expensesMonth);
-    }
-    getIncome() {
-      const _this = this;
-      incomeItems.forEach(function (item) {
-        let itemIncome = item.querySelector('.income-title').value;
-        let cashIncome = item.querySelector('.income-amount').value;
-        if (itemIncome !== '' && cashIncome !== '') {
-          _this.income[itemIncome] = cashIncome;
+        getIncome() {
+          const _this = this;
+          incomeItems.forEach(function (item) {
+            let itemIncome = item.querySelector('.income-title').value;
+            let cashIncome = item.querySelector('.income-amount').value;
+            if (itemIncome !== '' && cashIncome !== '') {
+              _this.income[itemIncome] = cashIncome;
+            }
+            _this.incomeMonth = 0;
+          });
+          for (let key in _this.income) {
+            _this.incomeMonth += +_this.income[key];
+          }
         }
-        _this.incomeMonth = 0;
-      });
-      for (let key in _this.income) {
-        _this.incomeMonth += +_this.income[key];
-      }
-    }
     */
     getBudget() {
       this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + Math.ceil(this.moneyDeposit * this.percentageDeposit / 12);
