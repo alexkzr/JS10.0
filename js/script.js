@@ -78,12 +78,31 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       _this.placeholders();
     }
-
+    getExpInc() {
+      const count = item => {
+        const startStr = item.className.split('-')[0];
+        const itemTitle = item.querySelector(`.${startStr}-title`).value;
+        const itemAmount = item.querySelector(`.${startStr}-amount`).value;
+        if (itemTitle !== '' && itemAmount !== '') {
+          this[startStr][itemTitle] = itemAmount;
+        }
+      }
+      expensesItems.forEach(count);
+      incomeItems.forEach(count);
+      for (let key in this.expenses) {
+        this.expensesMonth += +this.expenses[key];
+      }
+      for (let key in this.income) {
+        this.incomeMonth += +this.income[key];
+      }
+      console.log(this);
+    }
+    /*
     getExpenses() {
       const _this = this;
       expensesItems.forEach(function (item) {
-        let itemExpenses = item.querySelector('.expenses-title').value;
-        let cashExpenses = item.querySelector('.expenses-amount').value;
+        let itemExpenses = item.querySelector(`.${startStr}-title`).value;
+        let cashExpenses = item.querySelector(`.${startStr}-amount`).value;
         if (itemExpenses !== '' && cashExpenses !== '') {
           _this.expenses[itemExpenses] = cashExpenses;
           console.log('_this.expenses: ', _this.expenses);
@@ -109,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
         _this.incomeMonth += +_this.income[key];
       }
     }
+    */
     getBudget() {
       this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth + Math.ceil(this.moneyDeposit * this.percentageDeposit / 12);
       console.log('budgetMonth: ', this.budgetMonth);
@@ -270,8 +290,9 @@ document.addEventListener('DOMContentLoaded', function () {
     start() {
       this.budget = +salaryAmount.value;
       this.placeholders();
-      this.getExpenses();
-      this.getIncome();
+      // this.getExpenses();
+      // this.getIncome();
+      this.getExpInc()
       this.getInfoDeposit();
       this.getBudget();
       this.getAddBlock(additionalIncomeItem);
