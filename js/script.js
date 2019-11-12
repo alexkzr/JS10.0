@@ -33,5 +33,53 @@ window.addEventListener('DOMContentLoaded', function () {
     }
     updateClock();
   }
-  countTimer('10 november 2019');
+  countTimer(plusDay());
 });
+
+const plusDay = function () {
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'Octover', 'November', 'December'];
+  let date = new Date();
+  let day = date.getDate() + 1;
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let monthName = months[month];
+  let hours = date.getHours();
+  let hoursTotal = (hours + 24) / 24;
+  let hoursRounded = hoursTotal.toFixed(2);
+  let moreDays = day * hoursRounded;
+  let twentyFour = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);;
+  return twentyFour;
+};
+//End of Timer
+
+//Menu 
+const toggleMenu = () => {
+  const btnMenu = document.querySelector('.menu'),
+    menu = document.querySelector('menu'),
+    closeBtn = document.querySelector('.close-btn'),
+    menuItem = document.querySelectorAll('ul > li');
+  const menuAction = function () {
+    menu.classList.toggle('active-menu');
+  };
+  btnMenu.addEventListener('click', menuAction);
+  closeBtn.addEventListener('click', menuAction);
+  menuItem.forEach((elem) => elem.addEventListener('click', menuAction));
+};
+toggleMenu();
+
+//popup
+
+const togglePopup = function () {
+  const popup = document.querySelector('.popup'),
+    popupBtn = document.querySelectorAll('.popup-btn'),
+    popupClose = document.querySelector('.popup-close');
+  popupBtn.forEach((elem) => {
+    elem.addEventListener('click', () => {
+      popup.style.display = 'block';
+    });
+  });
+  popupClose.addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
+};
+togglePopup();
