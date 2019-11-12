@@ -245,6 +245,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       incomePlus.style.display = 'block';
       expensesPlus.style.display = 'block';
+      appData.clearStorage();
+      appData.clearCookies()
     }
     check() {
       if (salaryAmount.value != null || salaryAmount.value !== ' ') {
@@ -254,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
     submit() {
       if (+salaryAmount.value > 0 || salaryAmount.value != '') {
         this.start();
+        this.storage();
         let inputs = document.querySelectorAll('input[type=text');
         for (let i = 0; i < inputs.length; i++) {
           inputs[i].setAttribute("disabled", "disabled");
@@ -261,17 +264,6 @@ document.addEventListener('DOMContentLoaded', function () {
         cancel.style.display = 'block';
         submitButton.style.display = 'none';
       }
-      localStorage.income = appData.income;
-      localStorage.addIncome = appData.addIncome;
-      localStorage.expenses = appData.expenses;
-      localStorage.addExpenses = appData.addExpenses;
-      localStorage.deposit = appData.deposit;
-      localStorage.percentageDeposit = appData.percentageDeposit;
-      localStorage.incomeMonth = appData.incomeMonth;
-      localStorage.moneyDeposit = appData.moneyDeposit;
-      localStorage.budget = appData.budget;
-      localStorage.expensesMonth = appData.expensesMonth;
-      localStorage.budgetMonth = appData.budgetMonth;
       appData.budgetDay = 0;
     }
     placeholders() {
@@ -288,6 +280,56 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         }
       }
+    }
+    setCookie(key, value, year, month, day) {
+      let cookieStr = key + '=' + value;
+      if (year) {
+        const expires = new Date(year, month, day);
+        cookieStr += '; expires=' + expires.toGMTString();
+      }
+      document.cookie = cookieStr;
+    }
+    clearCookies() {
+      let cookies = document.cookie.split(";");
+
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i];
+        let eqPos = cookie.indexOf("=");
+        let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+      }
+    }
+    storage() {
+      const resultTotal = document.querySelectorAll('.result-total');
+      const resultTitle = document.querySelectorAll('.result div span.title');
+      for (let i = 0; i < resultTotal.length; i++) {
+        this.setCookie(resultTitle[i].textContent, resultTotal[i].value, 2021, 1, 1);
+        localStorage.setItem(resultTitle[i].textContent, resultTotal[i].value);
+        resultTotal[i].value = localStorage.getItem(resultTitle[i].textContent);
+        // resultTotal[i].value = appData.getCookie(resultTitle[i]);
+      }
+    }
+    getStorage() {
+      const resultTotal = document.querySelectorAll('.result-total');
+      const resultTitle = document.querySelectorAll('.result div span.title');
+      for (let i = 0; i < resultTotal.length; i++) {
+        resultTotal[i].value = localStorage.getItem(resultTitle[i].textContent);
+      }
+      let inputs = document.querySelectorAll('input[type=text');
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].setAttribute("disabled", "disabled");
+      }
+      cancel.style.display = 'block';
+      submitButton.style.display = 'none';
+    }
+    clearStorage() {
+      localStorage.clear();
+    }
+    getCookie(name) {
+      let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+      ));
+      return matches;
     }
     start() {
       this.budget = +salaryAmount.value;
@@ -318,17 +360,9 @@ document.addEventListener('DOMContentLoaded', function () {
   let bindCalc = appData.calcPeriod.bind(appData);
   let bindReset = appData.reset.bind(appData);
   let hardbind = appData.submit.bind(appData);
-
+  appData.getStorage();
   appData.placeholders();
   appData.eventListeners();
 
 
 });
-/*
-1) Необходимо сохранять данные при перезагрузки страницы или после закрытия браузера. Для этого нам понадобиться cookie и localStorage
-(ВНИМАНИЕ! Cookie будут сохраняться только если вы запускаете проект с сервера, то есть в адресной строке должно быть http:// или https://)
-2) После нажатия кнопки Рассчитать, данные из правой части записываем в созданный вами localStorage и cookie(+ еще одну куку isLoad, которую нужно приравнять к true), для каждого значения отдельная куки.
-3) При перезагрзки вставляются уже в правую часть. Левая часть так же остается заблокированной.
-4) Если нажимаем сбросить, то из локального хранилища удаляется все
-5) При выходе из браузера, перезагрузке все данные должны возвращаться на свои места (если они там были)
-6) Если пользователь удаляет хотя бы одну из кук или она не соответствует тому, что хранинься в локал (кука name должна равнятся свойству name в локальном хранилище), тогда принудительно удаляем наши куки и локальное хранилище и программа запускается ПОЛНОСТЬЮ заново. (очищается объект от данных)*/
