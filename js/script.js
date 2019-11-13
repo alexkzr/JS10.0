@@ -128,6 +128,16 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     }, false);
   }
+  //tabs script
+  const tabs = () => {
+    const tabHeader = document.querySelector('.service-header'),
+      tab = document.querySelector('.service-header-tab'),
+      tabContent = document.querySelector('.service-tab');
+    tabHeader.addEventListener('click', event => {
+      let target = event.target;
+
+    });
+  };
 
 
 });
