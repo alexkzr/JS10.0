@@ -65,6 +65,7 @@ window.addEventListener('DOMContentLoaded', function () {
     closeBtn.addEventListener('click', menuAction);
     menuItem.forEach((elem) => elem.addEventListener('click', menuAction));
   };
+
   toggleMenu();
 
   //popup
@@ -93,11 +94,20 @@ window.addEventListener('DOMContentLoaded', function () {
       elem.addEventListener('click', () => {
         checkScreen();
       });
-
     });
-    popupClose.addEventListener('click', () => {
-      // popup.style.display = 'none';
-      popup.style.transform = 'translateY(-100%)';
+
+    popup.addEventListener('click', e => {
+      let target = e.target;
+
+      if (target.classList.contains('popup-close')) {
+        popup.style.transform = 'translateY(-100%)';
+
+      } else {
+        target = target.closest('.popup-content');
+        if (!target) {
+          popup.style.transform = 'translateY(-100%)';
+        }
+      }
 
     });
   };
@@ -131,13 +141,32 @@ window.addEventListener('DOMContentLoaded', function () {
   //tabs script
   const tabs = () => {
     const tabHeader = document.querySelector('.service-header'),
-      tab = document.querySelector('.service-header-tab'),
-      tabContent = document.querySelector('.service-tab');
+      tab = tabHeader.querySelectorAll('.service-header-tab'),
+      tabContent = document.querySelectorAll('.service-tab');
+    const toggleTabContent = (index) => {
+      for (let i = 0; i < tabContent.length; i++) {
+        if (index === i) {
+          tab[i].classList.add('active');
+          tabContent[i].classList.remove('d-none');
+        } else {
+          tab[i].classList.remove('active');
+          tabContent[i].classList.add('d-none');
+        }
+      }
+    };
     tabHeader.addEventListener('click', event => {
       let target = event.target;
-
+      target = target.closest('.service-header-tab');
+      if (target) {
+        tab.forEach((item, i) => {
+          if (item === target) {
+            toggleTabContent(i);
+          }
+        });
+      }
     });
   };
+  tabs();
 
 
 });
