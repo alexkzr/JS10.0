@@ -128,6 +128,6 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     }, false);
   }
-
+  //tabs
 
 });
