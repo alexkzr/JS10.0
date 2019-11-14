@@ -113,32 +113,20 @@ window.addEventListener('DOMContentLoaded', function () {
   };
   togglePopup();
 
-  //smooth scroll down
-
-  let linkNav = document.querySelectorAll('[href^="#"]'), //выбираем все ссылки к якорю на странице
-    V = 1;  // скорость, может иметь дробное значение через точку (чем меньше значение - тем больше скорость)
-  for (let i = 0; i < linkNav.length; i++) {
-    linkNav[i].addEventListener('click', function (e) { //по клику на ссылку
-      e.preventDefault(); //отменяем стандартное поведение
-      let w = window.pageYOffset,  // производим прокрутка прокрутка
-        hash = this.href.replace(/[^#]*(.*)/, '$1');  // к id элемента, к которому нужно перейти
-      let t = document.querySelector(hash).getBoundingClientRect().top,  // отступ от окна браузера до id
-        start = null;
-      requestAnimationFrame(step);  // подробнее про функцию анимации [developer.mozilla.org]
-      function step(time) {
-        if (start === null) start = time;
-        let progress = time - start,
-          r = (t < 0 ? Math.max(w - progress / V, w + t) : Math.min(w + progress / V, w + t));
-        window.scrollTo(0, r);
-        if (r != w + t) {
-          requestAnimationFrame(step)
-        } else {
-          location.hash = hash;  // URL с хэшем
-        }
-      }
-    }, false);
+   /* -------------------------------------------------------------------------
+    begin Scroll Down Button
+  * ------------------------------------------------------------------------- */
+  let btn = document.querySelector('main > a');
+  let scrollTo = document.querySelector('#service-block');
+  function handleButtonClick(e) {
+    e.preventDefault();
+    scrollTo.scrollIntoView({ block: "center", behavior: "smooth" });
   }
-  //tabs script
+  btn.addEventListener('click', handleButtonClick);
+  /* -------------------------------------------------------------------------
+     end Scroll Down Button
+   * ------------------------------------------------------------------------- */
+  //tabs
   const tabs = () => {
     const tabHeader = document.querySelector('.service-header'),
       tab = tabHeader.querySelectorAll('.service-header-tab'),
