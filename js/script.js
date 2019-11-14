@@ -53,17 +53,25 @@ window.addEventListener('DOMContentLoaded', function () {
   //End of Timer
 
   //Menu 
-  const toggleMenu = () => {
+    const toggleMenu = () => {
     const btnMenu = document.querySelector('.menu'),
       menu = document.querySelector('menu'),
       closeBtn = document.querySelector('.close-btn'),
-      menuItem = document.querySelectorAll('ul > li');
-    const menuAction = function () {
-      menu.classList.toggle('active-menu');
-    };
-    btnMenu.addEventListener('click', menuAction);
-    closeBtn.addEventListener('click', menuAction);
-    menuItem.forEach((elem) => elem.addEventListener('click', menuAction));
+      menuItem = document.querySelectorAll('ul > li'),
+      body = document.querySelector('body');
+    body.addEventListener('click', e => {
+      let target = e.target,
+        parent = target.parentNode;
+      if (parent.classList.contains('menu')) {
+        menu.classList.toggle('active-menu');
+      } else if (target.classList.contains('close-btn')) {
+        menu.classList.toggle('active-menu');
+      } else if (parent.tagName === 'LI' && parent.parentNode.parentNode.tagName === 'MENU') {
+        menu.classList.toggle('active-menu');
+      } else if (target.tagName === 'MENU') {
+        menu.classList.toggle('active-menu');
+      }
+    });
   };
 
   toggleMenu();
