@@ -23,13 +23,15 @@ window.addEventListener('DOMContentLoaded', function () {
       timerHours.textContent = timer.hours;
       timerMinutes.textContent = timer.minutes;
       timerSeconds.textContent = timer.seconds;
-      if (timer.timeRemaining > 0) {
-        setInterval(updateClock, 1000);
-      } else if (timer.timeRemaining < 0) {
+      if (timer.timeRemaining < 0) {
         timerHours.textContent = '00';
         timerMinutes.textContent = '00';
         timerSeconds.textContent = '00';
       }
+    }
+    let timer = getTimeRemaining();
+    if (timer.timeRemaining > 0) {
+      setInterval(updateClock, 1000);
     }
     updateClock();
   }
@@ -69,6 +71,9 @@ window.addEventListener('DOMContentLoaded', function () {
         menu.classList.toggle('active-menu');
       } else if (parent.tagName === 'LI' && parent.parentNode.parentNode.tagName === 'MENU') {
         menu.classList.toggle('active-menu');
+      } else if (!parent.matches('menu')) {
+        menu.classList.toggle('active-menu');
+
       }
     });
   };
