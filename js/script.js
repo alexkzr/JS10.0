@@ -146,7 +146,6 @@ window.addEventListener('DOMContentLoaded', function () {
   const scrollElems = document.querySelectorAll('menu > ul > li > a');
 
 
-  //console.log(scrollElems);
   const scrollToElem = (start, stamp, duration, scrollEndElemTop, startScrollOffset) => {
     //debugger;
     const runtime = stamp - start;
@@ -154,7 +153,6 @@ window.addEventListener('DOMContentLoaded', function () {
     const ease = easeInCubic(progress);
 
     progress = Math.min(progress, 1);
-    console.log(startScrollOffset, startScrollOffset + (scrollEndElemTop * ease));
 
     const newScrollOffset = startScrollOffset + (scrollEndElemTop * ease);
     window.scroll(0, startScrollOffset + (scrollEndElemTop * ease));
