@@ -71,8 +71,8 @@ window.addEventListener('DOMContentLoaded', function () {
         menu.classList.toggle('active-menu');
       } else if (parent.tagName === 'LI' && parent.parentNode.parentNode.tagName === 'MENU') {
         menu.classList.toggle('active-menu');
-      } else if (!parent.matches('menu')) {
-        menu.classList.toggle('active-menu');
+      } else if (!parent.matches('menu') && menu.classList.contains('active-menu')) {
+        menu.classList.remove('active-menu');
 
       }
     });
