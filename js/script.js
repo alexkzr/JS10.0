@@ -294,6 +294,35 @@ window.addEventListener('DOMContentLoaded', function () {
 
   slider();
 
+/*****************************\ 
+   *  Change image src         *
+  \*************************** */
+  let teamImg = document.querySelectorAll('.command__photo'),
+    src, data;
+
+  teamImg.forEach((item) => {
+    item.addEventListener('mouseover', (e) => {
+      src = e.target.src;
+      data = e.target.dataset.img
+      e.target.src = e.target.dataset.img;
+      e.target.dataset.img = src;
+    })
+    item.addEventListener('mouseout', (e) => {
+      src = e.target.src;
+      data = e.target.dataset.img
+      e.target.src = e.target.dataset.img;
+      e.target.dataset.img = src;
+
+    })
+  });
+  /*****************************\ 
+   *  Input validation         *
+  \*************************** */
+
+  let calcBlock = document.querySelectorAll('.calc-block input');
+  calcBlock.forEach((item) => {
+    item.setAttribute("pattern", "/d/i");
+  })
 
 
 });
