@@ -35,7 +35,19 @@ window.addEventListener('DOMContentLoaded', function () {
   }
 
   const plusDay = function () {
-    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'Octover', 'November', 'December'];
+    let months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'Octover',
+      'November',
+      'December'];
     let date = new Date();
     let day = date.getDate() + 1;
     let year = date.getFullYear();
@@ -45,7 +57,7 @@ window.addEventListener('DOMContentLoaded', function () {
     let hoursTotal = (hours + 24) / 24;
     let hoursRounded = hoursTotal.toFixed(2);
     let moreDays = day * hoursRounded;
-    let twentyFour = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);;
+    let twentyFour = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
     return twentyFour;
   };
   countTimer(plusDay());
@@ -60,6 +72,16 @@ window.addEventListener('DOMContentLoaded', function () {
       closeBtn = document.querySelector('.close-btn'),
       menuItem = document.querySelectorAll('ul > li'),
       body = document.querySelector('body');
+    const menuScroll = (e) => {
+      e.preventDefault();
+      let listItem = document.querySelectorAll('menu > ul > li');
+      let scrollTo;
+      listItem.forEach((item) => {
+        let link = item.firstChild.href.match(/\#.+/ig);
+        scrollTo = document.querySelector(`${link[0]}`);
+        scrollTo.scrollIntoView({ block: "center", behavior: "smooth" });
+      });
+    };
     body.addEventListener('click', e => {
       let target = e.target,
         parent = target.parentNode;
@@ -68,9 +90,18 @@ window.addEventListener('DOMContentLoaded', function () {
         target.tagName === 'MENU') {
         menu.classList.toggle('active-menu');
       } else if (parent.tagName === 'LI' && parent.parentNode.parentNode.tagName === 'MENU') {
+        console.log(target);
         menu.classList.toggle('active-menu');
+        let listItem = document.querySelectorAll('menu > ul > li');
+        let scrollTo;
+        listItem.forEach((item) => {
+          let link = item.firstChild.href.match(/\#.+/ig);
+          scrollTo = document.querySelector(`${link[0]}`);
+          scrollTo.scrollIntoView({ block: "center", behavior: "smooth" });
+        });
       }
     });
+
   };
 
   toggleMenu();
@@ -186,7 +217,7 @@ window.addEventListener('DOMContentLoaded', function () {
         dotsWrap.appendChild(dots);
       }
       slider.appendChild(dotsWrap);
-    }
+    };
 
     createDots();
 
@@ -195,11 +226,11 @@ window.addEventListener('DOMContentLoaded', function () {
     const prevSlide = (elem, index, strClass) => {
       elem[index].classList.remove(strClass);
 
-    }
+    };
     const nextSlide = (elem, index, strClass) => {
       elem[index].classList.add(strClass);
 
-    }
+    };
 
     const autoPlaySlide = () => {
 
@@ -230,13 +261,13 @@ window.addEventListener('DOMContentLoaded', function () {
       if (target.matches('#arrow-right')) {
         currentSlide++;
       } else if (target.matches('#arrow-left')) {
-        currentSlide--
+        currentSlide--;
       } else if (target.matches('.dot')) {
         dot.forEach((elem, index) => {
           if (elem === target) {
             currentSlide = index;
           }
-        })
+        });
       }
       if (currentSlide >= slide.length) {
         currentSlide = 0;
