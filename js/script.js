@@ -17,19 +17,21 @@ window.addEventListener('DOMContentLoaded', function () {
 
       return { timeRemaining, hours, minutes, seconds };
     }
-    function updateClock() {
+function updateClock() {
 
       let timer = getTimeRemaining();
       timerHours.textContent = timer.hours;
       timerMinutes.textContent = timer.minutes;
       timerSeconds.textContent = timer.seconds;
-      if (timer.timeRemaining > 0) {
-        setInterval(updateClock, 1000);
-      } else if (timer.timeRemaining < 0) {
+      if (timer.timeRemaining < 0) {
         timerHours.textContent = '00';
         timerMinutes.textContent = '00';
         timerSeconds.textContent = '00';
       }
+    }
+    let timer = getTimeRemaining();
+    if (timer.timeRemaining > 0) {
+      setInterval(updateClock, 1000);
     }
     updateClock();
   }
