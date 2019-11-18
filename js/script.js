@@ -23,13 +23,15 @@ window.addEventListener('DOMContentLoaded', function () {
       timerHours.textContent = timer.hours;
       timerMinutes.textContent = timer.minutes;
       timerSeconds.textContent = timer.seconds;
-      if (timer.timeRemaining > 0) {
-        setInterval(updateClock, 1000);
-      } else if (timer.timeRemaining < 0) {
+      if (timer.timeRemaining < 0) {
         timerHours.textContent = '00';
         timerMinutes.textContent = '00';
         timerSeconds.textContent = '00';
       }
+    }
+    let timer = getTimeRemaining();
+    if (timer.timeRemaining > 0) {
+      setInterval(updateClock, 1000);
     }
     updateClock();
   }
@@ -294,6 +296,35 @@ window.addEventListener('DOMContentLoaded', function () {
 
   slider();
 
+  /*****************************\ 
+     *  Change image src         *
+    \*************************** */
+  let teamImg = document.querySelectorAll('.command__photo'),
+    src, data;
+
+  teamImg.forEach((item) => {
+    item.addEventListener('mouseover', (e) => {
+      src = e.target.src;
+      data = e.target.dataset.img;
+      e.target.src = e.target.dataset.img;
+      e.target.dataset.img = src;
+    });
+    item.addEventListener('mouseout', (e) => {
+      src = e.target.src;
+      data = e.target.dataset.img;
+      e.target.src = e.target.dataset.img;
+      e.target.dataset.img = src;
+
+    });
+  });
+  /*****************************\ 
+   *  Input validation         *
+  \*************************** */
+
+  let calcBlock = document.querySelectorAll('.calc-block input');
+  calcBlock.forEach((item) => {
+    item.setAttribute("pattern", "/d/i");
+  })
 
 
 });
