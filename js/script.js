@@ -331,7 +331,7 @@ window.addEventListener('DOMContentLoaded', function () {
         (key >= 35 && key <= 40) ||
         (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
         (key >= 96 && key <= 105)
-      )) e.preventDefault();
+      )) { e.preventDefault(); }
     });
   });
 
@@ -389,13 +389,11 @@ window.addEventListener('DOMContentLoaded', function () {
         totalValue.innerHTML = current;
       }
 
-      window.requestAnimationFrame(function () {
+      let requestID = window.requestAnimationFrame(function () {
         animate(end);
       });
       if (current === end) {
-        window.cancelAnimationFrame(function () {
-          animate(end);
-        });
+        window.cancelAnimationFrame(requestID);
         return;
       }
     }

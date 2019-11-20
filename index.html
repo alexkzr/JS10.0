@@ -415,7 +415,30 @@
     </div>
 
     <script src="js/script.js"></script>
+    <script src="js/validate/validate.js"></script>
     <script src="js/slider.js"></script>
+    <script>
+
+        const valid = new Validator({
+            selector: '#form2',
+            pattern: {
+                phoneUkr: /^\+380\d{7}$/,
+                phoneBel: /^\+372\d{7}$/,
+                phoneBul: /^\+359\d{7}$/,
+            },
+            method: {
+                'phone': [
+                    ['notEmpty'],
+                    ['pattern', 'zip', 'phone'],
+
+                ],
+
+            }
+        });
+
+        valid.init();
+
+    </script>
     <script>
         const carousel = new SliderCarousel({
             main: '.companies-wrapper',
