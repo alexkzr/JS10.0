@@ -92,7 +92,6 @@ window.addEventListener('DOMContentLoaded', function () {
         target.tagName === 'MENU') {
         menu.classList.toggle('active-menu');
       } else if (parent.tagName === 'LI' && parent.parentNode.parentNode.tagName === 'MENU') {
-        console.log(target);
         menu.classList.toggle('active-menu');
         let listItem = document.querySelectorAll('menu > ul > li');
         let scrollTo;
@@ -322,8 +321,8 @@ window.addEventListener('DOMContentLoaded', function () {
   \*************************** */
 
   let inputValue = 0;
-  let calcBlock = document.querySelectorAll('.calc-block input');
-  calcBlock.forEach((item) => {
+  let calcInputs = document.querySelectorAll('.calc-block input');
+  calcInputs.forEach((item) => {
     item.addEventListener('keydown', function (e) {
       let key = e.keyCode ? e.keyCode : e.which;
 
@@ -336,6 +335,97 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /*****************************\
+   *  Calculator               *
+  \*************************** */
+
+
+
+
+  const calc = (price = 100) => {
+    const calcBlock = document.querySelector('.calc-block'),
+      calcType = document.querySelector('.calc-type'),
+      calcSquare = document.querySelector('.calc-square'),
+      calcCount = document.querySelector('.calc-count'),
+      calcDay = document.querySelector('.calc-day'),
+      totalValue = document.getElementById('total');
+    let total = 0;
+
+
+
+    const countSum = () => {
+      let countValue = 1,
+        dayValue = 1;
+      let typeValue = calcType.options[calcType.selectedIndex].value;
+      let squareValue = +calcSquare.value;
+
+      if (calcCount.value > 1) {
+        countValue += +(calcCount.value - 1) / 10;
+      }
+
+      if (calcDay.value && +calcDay.value < 5) {
+        dayValue *= 2;
+      } else if (calcDay.value && +calcDay.value < 10) {
+        dayValue *= 1.5;
+      }
+
+      if (typeValue && squareValue) {
+        total = price * typeValue * squareValue * countValue * dayValue;
+      }
+
+
+      // totalValue.textContent = total;
+      if (calcSquare.value > 0) {
+        return requestAnimationFrame(function () { animate(total); });
+      }
+    };
+
+    function animate(end) {
+      let start = 0;
+      let current = start;
+      let increment = 1;
+      for (let i = start; i < end; i++) {
+        current += increment;
+        totalValue.innerHTML = current;
+      }
+
+      window.requestAnimationFrame(function () {
+        animate(end);
+      });
+      if (current === end) {
+        window.cancelAnimationFrame(function () {
+          animate(end);
+        });
+        return;
+      }
+    }
+
+    // function animate(end) {
+    //   let start = 0;
+    //   let current = start;
+    //   let increment = 1;
+    //   let timer = setInterval(function () {
+    //     current += increment;
+    //     totalValue.innerHTML = current;
+    //     console.log('current: ', current);
+    //     if (current == end) {
+    //       clearInterval(timer);
+    //     }
+    //   }, 4);
+    // }
+
+    calcBlock.addEventListener('change', (e) => {
+      const target = e.target;
+
+      if (target.matches('select') || target.matches('input')) {
+        countSum();
+
+      }
+
+
+    });
+  };
+  calc(100);
 
 
 });
