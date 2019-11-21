@@ -534,10 +534,13 @@ window.addEventListener('DOMContentLoaded', function () {
     form2.addEventListener('submit', e => {
       e.preventDefault();
       send(form2);
-      statusMessage.style.cssText = 'color: #fff;';
+      preloaderDiv.style.top = '90%';
+
     });
     form3.addEventListener('submit', e => {
       e.preventDefault();
+      statusMessage.style.color = '#fff';
+      preloaderDiv.style.top = '90%';
       send(form3);
     });
   };
