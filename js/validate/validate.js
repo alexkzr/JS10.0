@@ -17,7 +17,26 @@ class Validator {
   }
 
   isValid(elem) {
-    return false;
+    const validatorMethod = {
+      notEmpty(elem) {
+        if (elem.value.trim() === '') {
+          return false;
+        }
+        return true;
+      },
+      pattern(elem, pattern) {
+        return pattern.test(elem.value);
+      },
+    };
+    const method = this.method[elem.id];
+    console.log('method: ', method);
+
+    if (method) {
+      console.log('method.every: ', method.every(item => validatorMethod[item[0]](elem, this.pattern[item[1]])));
+      return method.every(item => validatorMethod[item[0]](elem, this.pattern[item[1]]));
+    }
+
+    return true;
   }
 
   checkIt(e) {
@@ -77,10 +96,12 @@ class Validator {
     if (!this.pattern.phone) {
       this.pattern.phone = /^\+[78]([-()]*\d){10}$/;
     }
-    if (!this.pattern.phone) {
-      this.pattern.email = /^\w+@\w+\.\w{2,}$/;
+    if (!this.pattern.email) {
+      this.pattern.email = /^\w+@\w+\.\w{2,}\w+?$/;
     }
-    console.log(this.pattern);
+    if (!this.pattern.name) {
+      this.pattern.email = /^\w$/;
+    }
   }
 
 }
