@@ -424,7 +424,7 @@
             pattern: {
                 phone: /^\+7\d{10}$/,
                 email: /^\w+@\w+\.\w{2,3}$/,
-                name: /^\D+$/,
+                name: /^[А-Яа-я]+$/,
             },
             method: {
                 'form1-phone': [
@@ -438,6 +438,10 @@
                 'form1-name': [
                     ['notEmpty'],
                     ['pattern', 'name']
+                ],
+                'form1-message': [
+                    ['notEmpty'],
+                    ['pattern', 'name']
                 ]
             }
         });
@@ -446,7 +450,7 @@
             pattern: {
                 phone: /^\+7\d{10}$/,
                 email: /^\w+@\w+\.\w{2,3}$/,
-                name: /^\D+$/,
+                name: /^[А-Яа-я]+$/,
                 // name: /^[A-Za-zА-Яа-яЁё]+$/
             },
             method: {
@@ -461,6 +465,10 @@
                 'form2-name': [
                     ['notEmpty'],
                     ['pattern', 'name']
+                ],
+                'form2-message': [
+                    ['notEmpty'],
+                    ['pattern', 'name']
                 ]
             }
         });
@@ -469,7 +477,7 @@
             pattern: {
                 phone: /^\+7\d{10}$/,
                 email: /^\w+@\w+\.\w{2,3}$/,
-                name: /^\D+$/,
+                name: /^[А-Яа-я]+$/,
             },
             method: {
                 'form3-phone': [
@@ -481,6 +489,10 @@
                     ['pattern', 'email']
                 ],
                 'form3-name': [
+                    ['notEmpty'],
+                    ['pattern', 'name']
+                ],
+                'form3-message': [
                     ['notEmpty'],
                     ['pattern', 'name']
                 ]
