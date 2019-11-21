@@ -380,37 +380,6 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     };
 
-    // function animate(end) {
-    //   let start = 0;
-    //   let current = start;
-    //   let increment = 1;
-    //   for (let i = start; i < end; i++) {
-    //     current += increment;
-    //     totalValue.innerHTML = current;
-    //   }
-
-    //   let requestID = window.requestAnimationFrame(function () {
-    //     animate(end);
-    //   });
-    //   if (current === end) {
-    //     window.cancelAnimationFrame(requestID);
-    //     return;
-    //   }
-    // }
-
-    // function animate(end) {
-    //   let start = 0;
-    //   let current = start;
-    //   let increment = 1;
-    //   let timer = setInterval(function () {
-    //     current += increment;
-    //     totalValue.innerHTML = current;
-    //     console.log('current: ', current);
-    //     if (current == end) {
-    //       clearInterval(timer);
-    //     }
-    //   }, 4);
-    // }
     function animate({ timing, draw, duration }) {
 
       let start = performance.now();
@@ -431,6 +400,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
       });
     }
+    /*****************************\
+    *  Animate numbers           *
+    \*************************** */
     function animateText(textArea) {
       let text = textArea.value;
       let to = total,
@@ -462,6 +434,115 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   };
   calc(100);
+  /*****************************\
+   *  Send forms               *
+  \*****************************/
 
+  const sendForm = () => {
+    const statusMessage = document.createElement('div');
+    const preloaderDiv = document.createElement('div');
+    preloaderDiv.id = 'hellopreloader_preload';
+
+    const preloader = () => {
+      let styleDiv = document.createElement('style');
+      styleDiv.textContent = `
+      #hellopreloader>p{
+        display:none;
+      }
+      form {
+        position: relative;
+      }
+      #hellopreloader_preload{
+        display: block;
+        position: absolute;
+        z-index: 99999;
+        top: 58%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 100px;
+        background: url(./images/pre.svg) center center no-repeat;
+        background-size: 30px;
+      }`;
+      document.head.appendChild(styleDiv);
+
+      var hellopreloader = document.getElementById("hellopreloader_preload"); 
+      function fadeOutnojquery(el) { 
+        el.style.opacity = 1; 
+        var interhellopreloader = setInterval(function () { 
+          el.style.opacity = el.style.opacity - 0.05; 
+          if (el.style.opacity <= 0.05) { 
+            clearInterval(interhellopreloader); 
+            hellopreloader.style.display = "none"; 
+          } 
+        }, 16); 
+      } 
+      window.onload = function () { 
+        setTimeout(function () { 
+          fadeOutnojquery(hellopreloader); 
+        }, 1000); 
+      };
+    };
+    const errorMessage = 'Что-то пошло не так...',
+    loadMessage = preloader,
+    // loadMessage = 'Загрузка...',
+    success = 'Спасибо! Мы свяжемся с вами!';
+    statusMessage.style.cssText = 'font-size: 2rem;';
+
+    const form = document.getElementById('form1');
+    const form2 = document.getElementById('form2');
+    const form3 = document.getElementById('form3');
+
+    const send = (selector) => {
+      selector.appendChild(preloaderDiv);
+      selector.appendChild(statusMessage);
+      const request = new XMLHttpRequest();
+
+      request.addEventListener('readystatechange', () => {
+        statusMessage.textContent = loadMessage();
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.status === 200) {
+          statusMessage.textContent = success;
+          preloaderDiv.style.display = 'none';
+        } else {
+          statusMessage.textContent = errorMessage;
+        }
+      });
+
+      request.open('POST', './server.php');
+      request.setRequestHeader('Content-Type', 'application/json');
+      const formData = new FormData(selector);
+
+      let body = {};
+      formData.forEach((val, key) => {
+        body[key] = val;
+      });
+
+      request.send(JSON.stringify(body));
+      selector.querySelectorAll('input').forEach((item) => item.value = '');
+
+    };
+
+
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      send(form);
+    });
+    form2.addEventListener('submit', e => {
+      e.preventDefault();
+      send(form2);
+      statusMessage.style.cssText = 'color: #fff;';
+    });
+    form3.addEventListener('submit', e => {
+      e.preventDefault();
+      send(form3);
+    });
+  };
+
+
+  sendForm();
 
 });
