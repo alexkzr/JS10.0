@@ -419,30 +419,77 @@
     <script src="js/slider.js"></script>
     <script>
 
-        const valid = new Validator({
-            selector: '#form2',
+        const valid1 = new Validator({
+            selector: '#form1',
             pattern: {
-                phone: /^\+380\d{7}$/,
+                phone: /^\+7\d{10}$/,
                 email: /^\w+@\w+\.\w{2,3}$/,
-                name: /^\D$/,
+                name: /^\D+$/,
             },
             method: {
-                'phone': [
+                'form1-phone': [
                     ['notEmpty'],
                     ['pattern', 'phone'],
                 ],
-                'email': [
+                'form1-email': [
                     ['notEmpty'],
                     ['pattern', 'email']
                 ],
-                'name': [
+                'form1-name': [
+                    ['notEmpty'],
+                    ['pattern', 'name']
+                ]
+            }
+        });
+        const valid2 = new Validator({
+            selector: '#form2',
+            pattern: {
+                phone: /^\+7\d{10}$/,
+                email: /^\w+@\w+\.\w{2,3}$/,
+                name: /^\D+$/,
+                // name: /^[A-Za-zА-Яа-яЁё]+$/
+            },
+            method: {
+                'form2-phone': [
+                    ['notEmpty'],
+                    ['pattern', 'phone'],
+                ],
+                'form2-email': [
+                    ['notEmpty'],
+                    ['pattern', 'email']
+                ],
+                'form2-name': [
+                    ['notEmpty'],
+                    ['pattern', 'name']
+                ]
+            }
+        });
+        const valid3 = new Validator({
+            selector: '#form3',
+            pattern: {
+                phone: /^\+7\d{10}$/,
+                email: /^\w+@\w+\.\w{2,3}$/,
+                name: /^\D+$/,
+            },
+            method: {
+                'form3-phone': [
+                    ['notEmpty'],
+                    ['pattern', 'phone'],
+                ],
+                'form3-email': [
+                    ['notEmpty'],
+                    ['pattern', 'email']
+                ],
+                'form3-name': [
                     ['notEmpty'],
                     ['pattern', 'name']
                 ]
             }
         });
 
-        valid.init();
+        valid1.init();
+        valid2.init();
+        valid3.init();
 
     </script>
     <script>

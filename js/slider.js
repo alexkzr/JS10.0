@@ -47,7 +47,6 @@ class SliderCarousel {
   addGloClass() {
     this.main.classList.add('glo-slider');
     this.wrap.classList.add('glo-slider__wrap');
-    console.log(this.slides);
     for (const item of this.slides) {
       item.classList.add('glo-slider__item');
     }
@@ -140,7 +139,6 @@ class SliderCarousel {
 
     const checkResponsive = () => {
       const widthWindow = document.documentElement.clientWidth;
-      console.log('widthWindow: ', widthWindow);
       if (widthWindow < maxResponsive) {
         for (let i = 0; i < alLResponsive.length; i++) {
           if (widthWindow < alLResponsive[i]) {
