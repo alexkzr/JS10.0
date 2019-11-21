@@ -422,17 +422,23 @@
         const valid = new Validator({
             selector: '#form2',
             pattern: {
-                phoneUkr: /^\+380\d{7}$/,
-                phoneBel: /^\+372\d{7}$/,
-                phoneBul: /^\+359\d{7}$/,
+                phone: /^\+380\d{7}$/,
+                email: /^\w+@\w+\.\w{2,3}$/,
+                name: /^\D$/,
             },
             method: {
                 'phone': [
                     ['notEmpty'],
-                    ['pattern', 'zip', 'phone'],
-
+                    ['pattern', 'phone'],
                 ],
-
+                'email': [
+                    ['notEmpty'],
+                    ['pattern', 'email']
+                ],
+                'name': [
+                    ['notEmpty'],
+                    ['pattern', 'name']
+                ]
             }
         });
 
