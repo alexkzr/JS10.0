@@ -376,27 +376,27 @@ window.addEventListener('DOMContentLoaded', function () {
 
       // totalValue.textContent = total;
       if (calcSquare.value > 0) {
-        return requestAnimationFrame(function () { animate(total); });
+        return total;
       }
     };
 
-    function animate(end) {
-      let start = 0;
-      let current = start;
-      let increment = 1;
-      for (let i = start; i < end; i++) {
-        current += increment;
-        totalValue.innerHTML = current;
-      }
+    // function animate(end) {
+    //   let start = 0;
+    //   let current = start;
+    //   let increment = 1;
+    //   for (let i = start; i < end; i++) {
+    //     current += increment;
+    //     totalValue.innerHTML = current;
+    //   }
 
-      let requestID = window.requestAnimationFrame(function () {
-        animate(end);
-      });
-      if (current === end) {
-        window.cancelAnimationFrame(requestID);
-        return;
-      }
-    }
+    //   let requestID = window.requestAnimationFrame(function () {
+    //     animate(end);
+    //   });
+    //   if (current === end) {
+    //     window.cancelAnimationFrame(requestID);
+    //     return;
+    //   }
+    // }
 
     // function animate(end) {
     //   let start = 0;
@@ -411,13 +411,51 @@ window.addEventListener('DOMContentLoaded', function () {
     //     }
     //   }, 4);
     // }
+    function animate({ timing, draw, duration }) {
+
+      let start = performance.now();
+
+      requestAnimationFrame(function animate(time) {
+        // timeFraction изменяется от 0 до 1
+        let timeFraction = (time - start) / duration;
+        if (timeFraction > 1) timeFraction = 1;
+
+        // вычисление текущего состояния анимации
+        let progress = timing(timeFraction);
+
+        draw(progress); // отрисовать её
+
+        if (timeFraction < 1) {
+          requestAnimationFrame(animate);
+        }
+
+      });
+    }
+    function animateText(textArea) {
+      let text = textArea.value;
+      let to = total,
+        from = 0;
+
+      animate({
+        duration: 1000,
+        timing: function (timeFraction) {
+          return timeFraction;
+        },
+        // timing: bounce,
+        draw: function (progress) {
+          let result = Math.ceil((to - from) * progress + from);
+          document.getElementById('total').textContent = result
+        }
+      });
+    }
+
 
     calcBlock.addEventListener('change', (e) => {
       const target = e.target;
 
       if (target.matches('select') || target.matches('input')) {
         countSum();
-
+        animateText(total)
       }
 
 
