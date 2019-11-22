@@ -496,15 +496,19 @@ window.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('form1');
     const form2 = document.getElementById('form2');
     const form3 = document.getElementById('form3');
-
+    let allTrue = [];
     const send = (selector) => {
       validArr.forEach((item) => {
         if (item.form === selector) {
           item.elementsForm.forEach((input) => {
-            console.log('item.isValid(input): ', item.isValid(input));
-            if (!item.isValid(input)) {
-              return;
-            }
+            allTrue.push(item.isValid(input));
+            console.log('allTrue: ', allTrue);
+            allTrue.forEach((item) => {
+              if (item === false) {
+                console.log("it's false");
+                return;
+              }
+            });
           });
         }
       });
