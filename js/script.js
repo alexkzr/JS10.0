@@ -438,7 +438,10 @@ window.addEventListener('DOMContentLoaded', function () {
    *  Send forms               *
   \*****************************/
 
+
+
   const sendForm = () => {
+
     const statusMessage = document.createElement('div');
     const preloaderDiv = document.createElement('div');
     preloaderDiv.id = 'hellopreloader_preload';
@@ -465,28 +468,29 @@ window.addEventListener('DOMContentLoaded', function () {
         background-size: 30px;
       }`;
       document.head.appendChild(styleDiv);
-
-      var hellopreloader = document.getElementById("hellopreloader_preload"); 
-      function fadeOutnojquery(el) { 
-        el.style.opacity = 1; 
-        var interhellopreloader = setInterval(function () { 
-          el.style.opacity = el.style.opacity - 0.05; 
-          if (el.style.opacity <= 0.05) { 
-            clearInterval(interhellopreloader); 
-            hellopreloader.style.display = "none"; 
-          } 
-        }, 16); 
-      } 
-      window.onload = function () { 
-        setTimeout(function () { 
-          fadeOutnojquery(hellopreloader); 
-        }, 1000); 
+      /* preloader function */
+      let hellopreloader = document.getElementById("hellopreloader_preload");
+      function fadeOutnojquery(el) {
+        el.style.opacity = 1;
+        let interhellopreloader = setInterval(function () {
+          el.style.opacity = el.style.opacity - 0.05;
+          if (el.style.opacity <= 0.05) {
+            clearInterval(interhellopreloader);
+            hellopreloader.style.display = "none";
+          }
+        }, 16);
+      }
+      window.onload = function () {
+        setTimeout(function () {
+          fadeOutnojquery(hellopreloader);
+        }, 1000);
       };
     };
+
+
     const errorMessage = 'Что-то пошло не так...',
-    loadMessage = preloader,
-    // loadMessage = 'Загрузка...',
-    success = 'Спасибо! Мы свяжемся с вами!';
+      loadMessage = preloader,
+      success = 'Спасибо! Мы свяжемся с вами!';
     statusMessage.style.cssText = 'font-size: 2rem;';
 
     const form = document.getElementById('form1');
@@ -494,6 +498,18 @@ window.addEventListener('DOMContentLoaded', function () {
     const form3 = document.getElementById('form3');
 
     const send = (selector) => {
+      validArr.forEach((item) => {
+        if (item.form === selector) {
+          item.elementsForm.forEach((input) => {
+            console.log('item.isValid(input): ', item.isValid(input));
+            if (!item.isValid(input)) {
+              return;
+            }
+          });
+        }
+      });
+
+
       selector.appendChild(preloaderDiv);
       selector.appendChild(statusMessage);
       const request = new XMLHttpRequest();
@@ -547,5 +563,94 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
   sendForm();
+  let validArr = [];
+  const valid1 = new Validator({
+    selector: '#form1',
+    pattern: {
+      phone: /^\+7\d{10}$/,
+      email: /^\w+@\w+\.\w{2,3}$/,
+      name: /^[А-Яа-я]+$/,
+    },
+    method: {
+      'form1-phone': [
+        ['notEmpty'],
+        ['pattern', 'phone'],
+      ],
+      'form1-email': [
+        ['notEmpty'],
+        ['pattern', 'email']
+      ],
+      'form1-name': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ],
+      'form1-message': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ]
+    }
+  });
+  validArr.push(valid1);
 
+  const valid2 = new Validator({
+    selector: '#form2',
+    pattern: {
+      phone: /^\+7\d{10}$/,
+      email: /^\w+@\w+\.\w{2,3}$/,
+      name: /^[А-Яа-я]+$/,
+      // name: /^[A-Za-zА-Яа-яЁё]+$/
+    },
+    method: {
+      'form2-phone': [
+        ['notEmpty'],
+        ['pattern', 'phone'],
+      ],
+      'form2-email': [
+        ['notEmpty'],
+        ['pattern', 'email']
+      ],
+      'form2-name': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ],
+      'form2-message': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ]
+    }
+  });
+  validArr.push(valid2);
+
+  const valid3 = new Validator({
+    selector: '#form3',
+    pattern: {
+      phone: /^\+7\d{10}$/,
+      email: /^\w+@\w+\.\w{2,3}$/,
+      name: /^[А-Яа-я]+$/,
+    },
+    method: {
+      'form3-phone': [
+        ['notEmpty'],
+        ['pattern', 'phone'],
+      ],
+      'form3-email': [
+        ['notEmpty'],
+        ['pattern', 'email']
+      ],
+      'form3-name': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ],
+      'form3-message': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ]
+    }
+  });
+  validArr.push(valid3);
+
+
+  valid1.init();
+  valid2.init();
+  valid3.init();
 });
