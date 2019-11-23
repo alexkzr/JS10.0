@@ -440,6 +440,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
 
+  let validatorError = document.querySelectorAll('.validator-error');
   const sendForm = () => {
 
     const statusMessage = document.createElement('div');
@@ -447,6 +448,9 @@ window.addEventListener('DOMContentLoaded', function () {
     preloaderDiv.id = 'hellopreloader_preload';
 
     const preloader = () => {
+      let hellopreloader = document.getElementById("hellopreloader_preload");
+      hellopreloader.style.display = "block";
+
       let styleDiv = document.createElement('style');
       styleDiv.textContent = `
       #hellopreloader>p{
@@ -468,23 +472,7 @@ window.addEventListener('DOMContentLoaded', function () {
         background-size: 30px;
       }`;
       document.head.appendChild(styleDiv);
-      /* preloader function */
-      let hellopreloader = document.getElementById("hellopreloader_preload");
-      function fadeOutnojquery(el) {
-        el.style.opacity = 1;
-        let interhellopreloader = setInterval(function () {
-          el.style.opacity = el.style.opacity - 0.05;
-          if (el.style.opacity <= 0.05) {
-            clearInterval(interhellopreloader);
-            hellopreloader.style.display = "none";
-          }
-        }, 16);
-      }
-      window.onload = function () {
-        setTimeout(function () {
-          fadeOutnojquery(hellopreloader);
-        }, 1000);
-      };
+
     };
 
 
@@ -496,23 +484,19 @@ window.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('form1');
     const form2 = document.getElementById('form2');
     const form3 = document.getElementById('form3');
-    let allTrue = [];
+
     const send = (selector) => {
+      let isFalse = 0;
       validArr.forEach((item) => {
         if (item.form === selector) {
           item.elementsForm.forEach((input) => {
-            allTrue.push(item.isValid(input));
-            console.log('allTrue: ', allTrue);
-            allTrue.forEach((item) => {
-              if (item === false) {
-                console.log("it's false");
-                return;
-              }
-            });
+            if (!item.isValid(input)) {
+              isFalse++;
+            }
           });
         }
       });
-
+      if (isFalse) return;
 
       selector.appendChild(preloaderDiv);
       selector.appendChild(statusMessage);
@@ -541,7 +525,14 @@ window.addEventListener('DOMContentLoaded', function () {
       });
 
       request.send(JSON.stringify(body));
-      selector.querySelectorAll('input').forEach((item) => item.value = '');
+      selector.querySelectorAll('input').forEach((item) => {
+        item.value = '';
+        if (item.nextElementSibling) {
+          if (item.nextElementSibling.classList.contains('validator-error')) {
+            item.nextElementSibling.remove();
+          }
+        }
+      });
 
     };
 
@@ -550,10 +541,14 @@ window.addEventListener('DOMContentLoaded', function () {
     form.addEventListener('submit', e => {
       e.preventDefault();
       send(form);
+      removeValidErr();
+
     });
     form2.addEventListener('submit', e => {
       e.preventDefault();
       send(form2);
+      removeValidErr();
+
       preloaderDiv.style.top = '90%';
 
     });
@@ -562,11 +557,27 @@ window.addEventListener('DOMContentLoaded', function () {
       statusMessage.style.color = '#fff';
       preloaderDiv.style.top = '90%';
       send(form3);
+      removeValidErr();
+
     });
   };
 
 
+
+  const removeValidErr = () => {
+
+    console.log('validatorError: ', validatorError);
+    validatorError.forEach((item) => {
+      console.log(' item.parentNode: ', item.parentNode);
+      console.log('item: ', item);
+      item.parentNode.removeChild(item);
+    });
+  };
+
   sendForm();
+
+
+
   let validArr = [];
   const valid1 = new Validator({
     selector: '#form1',
