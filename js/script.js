@@ -480,6 +480,74 @@ window.addEventListener('DOMContentLoaded', function () {
     const form2 = document.getElementById('form2');
     const form3 = document.getElementById('form3');
 
+    /*experiment start */
+
+
+    const request = new XMLHttpRequest();
+
+    request.addEventListener('readystatechange', () => {
+      statusMessage.textContent = loadMessage();
+      if (request.readyState !== 4) {
+        return;
+      }
+      if (request.status === 200) {
+        statusMessage.textContent = success;
+        preloaderDiv.style.display = 'none';
+      } else {
+        statusMessage.textContent = errorMessage;
+      }
+    });
+
+    request.open('POST', './server.php');
+    request.setRequestHeader('Content-Type', 'application/json');
+    const formData = new FormData(selector);
+
+    let body = {};
+    formData.forEach((val, key) => {
+      body[key] = val;
+    });
+
+    request.send(JSON.stringify(body));
+    selector.querySelectorAll('input').forEach((item) => {
+      item.value = '';
+      removeValidErr();
+      if (item.nextElementSibling) {
+        if (item.nextElementSibling.classList.contains('validator-error')) {
+          item.nextElementSibling.remove();
+        }
+      }
+    });
+
+    /*experiment end*/
+
+    const getData = (url) => {
+
+      return new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest();
+        request.open('POST', url);
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.addEventListener('readystatechange', () => {
+          if (request.readyState !== 4) {
+            return;
+          }
+          if (request.status === 200) {
+            statusMessage.textContent = success;
+            preloaderDiv.style.display = 'none';
+            const response = JSON.parse(request.responseText);
+            console.log('response: ', response);
+            resolve(response);
+          } else {
+            statusMessage.textContent = errorMessage;
+            reject(request.statusText);
+          }
+
+        });
+        request.send();
+
+      });
+
+    };
+
     const send = (selector) => {
       let isFalse = 0;
       validArr.forEach((item) => {
@@ -495,40 +563,34 @@ window.addEventListener('DOMContentLoaded', function () {
 
       selector.appendChild(preloaderDiv);
       selector.appendChild(statusMessage);
-      const request = new XMLHttpRequest();
 
-      request.addEventListener('readystatechange', () => {
-        statusMessage.textContent = loadMessage();
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 200) {
-          statusMessage.textContent = success;
-          preloaderDiv.style.display = 'none';
-        } else {
-          statusMessage.textContent = errorMessage;
-        }
-      });
+      const formD = (data) => {
+        const formData = new FormData(selector);
 
-      request.open('POST', './server.php');
-      request.setRequestHeader('Content-Type', 'application/json');
-      const formData = new FormData(selector);
+        let body = {};
+        formData.forEach((val, key) => {
+          body[key] = val;
+        });
 
-      let body = {};
-      formData.forEach((val, key) => {
-        body[key] = val;
-      });
-
-      request.send(JSON.stringify(body));
-      selector.querySelectorAll('input').forEach((item) => {
-        item.value = '';
-        removeValidErr();
-        if (item.nextElementSibling) {
-          if (item.nextElementSibling.classList.contains('validator-error')) {
-            item.nextElementSibling.remove();
+        data.send(JSON.stringify(body));
+        selector.querySelectorAll('input').forEach((item) => {
+          item.value = '';
+          removeValidErr();
+          if (item.nextElementSibling) {
+            if (item.nextElementSibling.classList.contains('validator-error')) {
+              item.nextElementSibling.remove();
+            }
           }
-        }
-      });
+        });
+      };
+
+      getData("./server.php")
+        .then(formD)
+        .catch(error => console.error(error));
+
+
+
+
 
     };
 
