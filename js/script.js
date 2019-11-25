@@ -72,18 +72,12 @@ window.addEventListener('DOMContentLoaded', function () {
     const btnMenu = document.querySelector('.menu'),
       menu = document.querySelector('menu'),
       closeBtn = document.querySelector('.close-btn'),
-      menuItem = document.querySelectorAll('ul > li'),
-      body = document.querySelector('body');
-    const menuScroll = (e) => {
-      e.preventDefault();
-      let listItem = document.querySelectorAll('menu > ul > li');
-      let scrollTo;
-      listItem.forEach((item) => {
-        let link = item.firstChild.href.match(/\#.+/ig);
-        scrollTo = document.querySelector(`${link[0]}`);
-        scrollTo.scrollIntoView({ block: "center", behavior: "smooth" });
-      });
-    };
+      body = document.querySelector('body'),
+      html = document.querySelector('html');
+    let menuItem = document.querySelectorAll('meny > ul > li');
+    html.cssText = `scroll-behavior: smooth;`;
+    html.style.scrollBehavior = 'smooth';
+
     body.addEventListener('click', e => {
       let target = e.target,
         parent = target.parentNode;
@@ -93,13 +87,14 @@ window.addEventListener('DOMContentLoaded', function () {
         menu.classList.toggle('active-menu');
       } else if (parent.tagName === 'LI' && parent.parentNode.parentNode.tagName === 'MENU') {
         menu.classList.toggle('active-menu');
-        let listItem = document.querySelectorAll('menu > ul > li');
         let scrollTo;
-        listItem.forEach((item) => {
+        menuItem.forEach((item) => menuItem.addEventListener('click', () => {
           let link = item.firstChild.href.match(/\#.+/ig);
           scrollTo = document.querySelector(`${link[0]}`);
           scrollTo.scrollIntoView({ block: "center", behavior: "smooth" });
-        });
+        }));
+      } else if (!parent.matches('menu') && menu.classList.contains('active-menu')) {
+        menu.classList.remove('active-menu');
       }
     });
 
@@ -154,7 +149,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   /* -------------------------------------------------------------------------
    begin Scroll Down Button
- * ------------------------------------------------------------------------- */
+  * ------------------------------------------------------------------------- */
   let btn = document.querySelector('main > a');
   let scrollTo = document.querySelector('#service-block');
   function handleButtonClick(e) {
@@ -380,37 +375,6 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     };
 
-    // function animate(end) {
-    //   let start = 0;
-    //   let current = start;
-    //   let increment = 1;
-    //   for (let i = start; i < end; i++) {
-    //     current += increment;
-    //     totalValue.innerHTML = current;
-    //   }
-
-    //   let requestID = window.requestAnimationFrame(function () {
-    //     animate(end);
-    //   });
-    //   if (current === end) {
-    //     window.cancelAnimationFrame(requestID);
-    //     return;
-    //   }
-    // }
-
-    // function animate(end) {
-    //   let start = 0;
-    //   let current = start;
-    //   let increment = 1;
-    //   let timer = setInterval(function () {
-    //     current += increment;
-    //     totalValue.innerHTML = current;
-    //     console.log('current: ', current);
-    //     if (current == end) {
-    //       clearInterval(timer);
-    //     }
-    //   }, 4);
-    // }
     function animate({ timing, draw, duration }) {
 
       let start = performance.now();
@@ -431,6 +395,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
       });
     }
+    /*****************************\
+    *  Animate numbers           *
+    \*************************** */
     function animateText(textArea) {
       let text = textArea.value;
       let to = total,
@@ -462,6 +429,243 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   };
   calc(100);
+  /*****************************\
+   *  Send forms               *
+  \*****************************/
 
+
+
+  let validatorError = document.querySelectorAll('.validator-error');
+  const sendForm = () => {
+
+    const statusMessage = document.createElement('div');
+    const preloaderDiv = document.createElement('div');
+    preloaderDiv.id = 'hellopreloader_preload';
+
+    const preloader = () => {
+      let hellopreloader = document.getElementById("hellopreloader_preload");
+      hellopreloader.style.display = "block";
+
+      let styleDiv = document.createElement('style');
+      styleDiv.textContent = `
+      #hellopreloader>p{
+        display:none;
+      }
+      form {
+        position: relative;
+      }
+      #hellopreloader_preload{
+        display: block;
+        position: absolute;
+        z-index: 99999;
+        top: 58%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 100px;
+        background: url(./images/pre.svg) center center no-repeat;
+        background-size: 30px;
+      }`;
+      document.head.appendChild(styleDiv);
+
+    };
+
+
+    const errorMessage = 'Что-то пошло не так...',
+      loadMessage = preloader,
+      success = 'Спасибо! Мы свяжемся с вами!';
+    statusMessage.style.cssText = 'font-size: 2rem;';
+
+    const form = document.getElementById('form1');
+    const form2 = document.getElementById('form2');
+    const form3 = document.getElementById('form3');
+
+    const send = (selector) => {
+      let isFalse = 0;
+      validArr.forEach((item) => {
+        if (item.form === selector) {
+          item.elementsForm.forEach((input) => {
+            if (!item.isValid(input)) {
+              isFalse++;
+            }
+          });
+        }
+      });
+      if (isFalse) return;
+
+      selector.appendChild(preloaderDiv);
+      selector.appendChild(statusMessage);
+      const request = new XMLHttpRequest();
+
+      request.addEventListener('readystatechange', () => {
+        statusMessage.textContent = loadMessage();
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.status === 200) {
+          statusMessage.textContent = success;
+          preloaderDiv.style.display = 'none';
+        } else {
+          statusMessage.textContent = errorMessage;
+        }
+      });
+
+      request.open('POST', './server.php');
+      request.setRequestHeader('Content-Type', 'application/json');
+      const formData = new FormData(selector);
+
+      let body = {};
+      formData.forEach((val, key) => {
+        body[key] = val;
+      });
+
+      request.send(JSON.stringify(body));
+      selector.querySelectorAll('input').forEach((item) => {
+        item.value = '';
+        removeValidErr();
+        if (item.nextElementSibling) {
+          if (item.nextElementSibling.classList.contains('validator-error')) {
+            item.nextElementSibling.remove();
+          }
+        }
+      });
+
+    };
+
+
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      removeValidErr(send(form));
+
+    });
+    form2.addEventListener('submit', e => {
+      e.preventDefault();
+      send(form2);
+      removeValidErr();
+
+      preloaderDiv.style.top = '90%';
+
+    });
+    form3.addEventListener('submit', e => {
+      e.preventDefault();
+      statusMessage.style.color = '#fff';
+      preloaderDiv.style.top = '90%';
+      send(form3);
+      removeValidErr();
+
+    });
+  };
+
+
+
+
+
+  sendForm();
+
+
+
+  let validArr = [];
+  const valid1 = new Validator({
+    selector: '#form1',
+    pattern: {
+      phone: /^\+7\d{10}$/,
+      email: /^\w+@\w+\.\w{2,3}$/,
+      name: /^[А-Яа-я]+$/,
+    },
+    method: {
+      'form1-phone': [
+        ['notEmpty'],
+        ['pattern', 'phone'],
+      ],
+      'form1-email': [
+        ['notEmpty'],
+        ['pattern', 'email']
+      ],
+      'form1-name': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ],
+      'form1-message': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ]
+    }
+  });
+  validArr.push(valid1);
+
+  const valid2 = new Validator({
+    selector: '#form2',
+    pattern: {
+      phone: /^\+7\d{10}$/,
+      email: /^\w+@\w+\.\w{2,3}$/,
+      name: /^[А-Яа-я]+$/,
+      // name: /^[A-Za-zА-Яа-яЁё]+$/
+    },
+    method: {
+      'form2-phone': [
+        ['notEmpty'],
+        ['pattern', 'phone'],
+      ],
+      'form2-email': [
+        ['notEmpty'],
+        ['pattern', 'email']
+      ],
+      'form2-name': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ],
+      'form2-message': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ]
+    }
+  });
+  validArr.push(valid2);
+
+  const valid3 = new Validator({
+    selector: '#form3',
+    pattern: {
+      phone: /^\+7\d{10}$/,
+      email: /^\w+@\w+\.\w{2,3}$/,
+      name: /^[А-Яа-я]+$/,
+    },
+    method: {
+      'form3-phone': [
+        ['notEmpty'],
+        ['pattern', 'phone'],
+      ],
+      'form3-email': [
+        ['notEmpty'],
+        ['pattern', 'email']
+      ],
+      'form3-name': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ],
+      'form3-message': [
+        ['notEmpty'],
+        ['pattern', 'name']
+      ]
+    }
+  });
+  validArr.push(valid3);
+
+
+  valid1.init();
+  valid2.init();
+  valid3.init();
+
+
+  const removeValidErr = (callback) => {
+    validatorError = document.querySelectorAll('.validator-error');
+    console.log('validatorError: ', validatorError);
+    validatorError.forEach((item) => {
+      console.log(' item.parentNode: ', item.parentNode);
+      console.log('item: ', item);
+      item.parentNode.removeChild(item);
+    });
+  };
 
 });

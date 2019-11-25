@@ -25,10 +25,9 @@ class Validator {
   }
 
   isValid(elem) {
-
     const validatorMethod = {
       notEmpty(elem) {
-        if (elem.value.trim() === '') {
+        if (elem.value.trim() === null) {
           return false;
         }
         return true;
@@ -37,9 +36,7 @@ class Validator {
         return pattern.test(elem.value);
       },
     };
-
     if (this.method) {
-
       const method = this.method[elem.id];
       if (method) {
         return method.every(item => validatorMethod[item[0]](elem, this.pattern[item[1]]));
@@ -47,8 +44,7 @@ class Validator {
     } else {
       console.warn('Необходимо передать id полей ввода и методы проверки этих полей');
     }
-
-    return true;
+    // return true;
   }
 
   checkIt(e) {
