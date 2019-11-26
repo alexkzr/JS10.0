@@ -106,12 +106,14 @@ window.addEventListener('DOMContentLoaded', function () {
   const popup = document.querySelector('.popup'),
     popupBtn = document.querySelectorAll('.popup-btn'),
     popupClose = document.querySelector('.popup-close');
+  popup.style.transition = 'all 0.5s';
+  popup.style.transform = 'translateY(-100%)';
+  popup.style.display = 'block';
   const checkScreen = function () {
     if (window.screen.width < 768) {
       popup.style.transition = 'all 0s ease 0s';
-      popup.style.display = 'block';
       popup.style.transform = 'translateY(0)';
-
+      popup.style.display = 'block';
     } else {
       popup.style.transition = 'all 0.5s';
       if (!popup.style.transform || popup.style.transform === 'translateY(-100%)') {
@@ -123,7 +125,6 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     }
   };
-  checkScreen();
   const togglePopup = function () {
     popupBtn.forEach((elem) => {
       elem.addEventListener('click', () => {
@@ -484,12 +485,19 @@ window.addEventListener('DOMContentLoaded', function () {
     const form2 = document.getElementById('form2');
     const form3 = document.getElementById('form3');
 
-    const getData = (url) => {
+    const getData = (url, selector) => {
 
       return new Promise((resolve, reject) => {
         const request = new XMLHttpRequest();
         request.open('POST', url);
         request.setRequestHeader('Content-Type', 'application/json');
+
+        const formData = new FormData(selector);
+
+        let body = {};
+        formData.forEach((val, key) => {
+          body[key] = val;
+        });
         request.addEventListener('readystatechange', () => {
           if (request.readyState !== 4) {
             return;
@@ -497,16 +505,14 @@ window.addEventListener('DOMContentLoaded', function () {
           if (request.status === 200) {
             statusMessage.textContent = success;
             preloaderDiv.style.display = 'none';
-            const response = JSON.parse(request.responseText);
-            console.log('response: ', response);
-            resolve(response);
+            resolve(request);
           } else {
             statusMessage.textContent = errorMessage;
             reject(request.statusText);
           }
 
         });
-        request.send();
+        request.send(JSON.stringify(body));
 
       });
 
@@ -528,38 +534,71 @@ window.addEventListener('DOMContentLoaded', function () {
       selector.appendChild(preloaderDiv);
       selector.appendChild(statusMessage);
 
-      const formD = (data) => {
-        const formData = new FormData(selector);
 
-        let body = {};
-        formData.forEach((val, key) => {
-          body[key] = val;
-        });
-
-        data.send(JSON.stringify(body));
-        selector.querySelectorAll('input').forEach((item) => {
-          item.value = '';
-          removeValidErr();
-          if (item.nextElementSibling) {
-            if (item.nextElementSibling.classList.contains('validator-error')) {
-              item.nextElementSibling.remove();
-            }
-          }
-        });
-      };
       let urLink = "../server.php";
-      console.log('urLink: ', urLink);
 
-      getData(urLink)
-        .then(formD)
+      getData(urLink, selector)
+        .then(data => console.log(data))
         .catch(error => console.error(error));
 
     };
 
+    /* OLD PIECE OF CODE
+        const send = (selector) => {
+          let isFalse = 0;
+          validArr.forEach((item) => {
+            if (item.form === selector) {
+              item.elementsForm.forEach((input) => {
+                if (!item.isValid(input)) {
+                  isFalse++;
+                }
+              });
+            }
+          });
+          if (isFalse) return;
+    
+          selector.appendChild(preloaderDiv);
+          selector.appendChild(statusMessage);
+          const request = new XMLHttpRequest();
+    
+          request.addEventListener('readystatechange', () => {
+            statusMessage.textContent = loadMessage();
+            if (request.readyState !== 4) {
+              return;
+            }
+            if (request.status === 200) {
+              statusMessage.textContent = success;
+              preloaderDiv.style.display = 'none';
+            } else {
+              statusMessage.textContent = errorMessage;
+            }
+          });
+    
+          request.open('POST', './server.php');
+          request.setRequestHeader('Content-Type', 'application/json');
+          const formData = new FormData(selector);
+    
+          let body = {};
+          formData.forEach((val, key) => {
+            body[key] = val;
+          });
+    
+          request.send(JSON.stringify(body));
+          selector.querySelectorAll('input').forEach((item) => {
+            item.value = '';
+            removeValidErr();
+            if (item.nextElementSibling) {
+              if (item.nextElementSibling.classList.contains('validator-error')) {
+                item.nextElementSibling.remove();
+              }
+            }
+          });
+    
+        };
+        */
     form.addEventListener('submit', e => {
       e.preventDefault();
-
-      removeValidErr(send(form));
+      send(form);
 
     });
     form2.addEventListener('submit', e => {
