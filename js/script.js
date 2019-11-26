@@ -123,6 +123,7 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     }
   };
+  checkScreen();
   const togglePopup = function () {
     popupBtn.forEach((elem) => {
       elem.addEventListener('click', () => {
@@ -441,10 +442,13 @@ window.addEventListener('DOMContentLoaded', function () {
     const statusMessage = document.createElement('div');
     const preloaderDiv = document.createElement('div');
     preloaderDiv.id = 'hellopreloader_preload';
+    let hellopreloader = document.getElementById("hellopreloader_preload");
 
     const preloader = () => {
-      let hellopreloader = document.getElementById("hellopreloader_preload");
-      hellopreloader.style.display = "block";
+      console.log('hellopreloader: ', hellopreloader);
+      console.log('preloaderDiv: ', preloaderDiv);
+      preloaderDiv.style.display = "block";
+      // hellopreloader.style.display = "block";
 
       let styleDiv = document.createElement('style');
       styleDiv.textContent = `
@@ -479,46 +483,6 @@ window.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('form1');
     const form2 = document.getElementById('form2');
     const form3 = document.getElementById('form3');
-
-    /*experiment start */
-
-
-    const request = new XMLHttpRequest();
-
-    request.addEventListener('readystatechange', () => {
-      statusMessage.textContent = loadMessage();
-      if (request.readyState !== 4) {
-        return;
-      }
-      if (request.status === 200) {
-        statusMessage.textContent = success;
-        preloaderDiv.style.display = 'none';
-      } else {
-        statusMessage.textContent = errorMessage;
-      }
-    });
-
-    request.open('POST', './server.php');
-    request.setRequestHeader('Content-Type', 'application/json');
-    const formData = new FormData(selector);
-
-    let body = {};
-    formData.forEach((val, key) => {
-      body[key] = val;
-    });
-
-    request.send(JSON.stringify(body));
-    selector.querySelectorAll('input').forEach((item) => {
-      item.value = '';
-      removeValidErr();
-      if (item.nextElementSibling) {
-        if (item.nextElementSibling.classList.contains('validator-error')) {
-          item.nextElementSibling.remove();
-        }
-      }
-    });
-
-    /*experiment end*/
 
     const getData = (url) => {
 
@@ -583,18 +547,14 @@ window.addEventListener('DOMContentLoaded', function () {
           }
         });
       };
+      let urLink = "../server.php";
+      console.log('urLink: ', urLink);
 
-      getData("./server.php")
+      getData(urLink)
         .then(formD)
         .catch(error => console.error(error));
 
-
-
-
-
     };
-
-
 
     form.addEventListener('submit', e => {
       e.preventDefault();
