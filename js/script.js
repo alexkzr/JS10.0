@@ -486,37 +486,19 @@ window.addEventListener('DOMContentLoaded', function () {
     const form3 = document.getElementById('form3');
 
     const getData = (url, selector) => {
+      const formData = new FormData(selector);
 
-      return new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
-        request.open('POST', url);
-        request.setRequestHeader('Content-Type', 'application/json');
-
-        const formData = new FormData(selector);
-
-        let body = {};
-        formData.forEach((val, key) => {
-          body[key] = val;
-        });
-        request.addEventListener('readystatechange', () => {
-          if (request.readyState !== 4) {
-            return;
-          }
-          if (request.status === 200) {
-            loadMessage();
-            statusMessage.textContent = success;
-            preloaderDiv.style.display = 'none';
-            resolve(request);
-          } else {
-            statusMessage.textContent = errorMessage;
-            reject(request.statusText);
-          }
-
-        });
-        request.send(JSON.stringify(body));
-
+      let body = {};
+      formData.forEach((val, key) => {
+        body[key] = val;
       });
-
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      });
     };
 
     const send = (selector) => {
@@ -539,7 +521,16 @@ window.addEventListener('DOMContentLoaded', function () {
       let urLink = "../server.php";
 
       getData(urLink, selector)
-        .then(data => console.log(data))
+        .then(data => {
+          if (data.status !== 200) {
+            statusMessage.textContent = errorMessage;
+            throw new Error('status not 200');
+          }
+          loadMessage();
+          statusMessage.textContent = success;
+          preloaderDiv.style.display = 'none';
+          console.log(data);
+        })
         .catch(error => console.error(error));
 
     };
