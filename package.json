@@ -1,0 +1,23 @@
+{
+  "name": "pre-diploma",
+  "version": "1.0.0",
+  "description": "pre-diploma project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/askkozyrev/JS10.0.git"
+  },
+  "author": "ASKozyrev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/askkozyrev/JS10.0/issues"
+  },
+  "homepage": "https://github.com/askkozyrev/JS10.0#readme",
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
