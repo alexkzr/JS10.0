@@ -477,9 +477,10 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     const errorMessage = 'Что-то пошло не так...',
-      loadMessage = preloader,
+      loadMessage = 'Загрузка...',
       success = 'Спасибо! Мы свяжемся с вами!';
     statusMessage.style.cssText = 'font-size: 2rem;';
+    statusMessage.className = 'statusMessage';
 
     const form = document.getElementById('form1');
     const form2 = document.getElementById('form2');
@@ -487,7 +488,8 @@ window.addEventListener('DOMContentLoaded', function () {
 
     const getData = (url, selector) => {
       const formData = new FormData(selector);
-
+      selector.appendChild(statusMessage);
+      statusMessage.textContent = loadMessage;
       let body = {};
       formData.forEach((val, key) => {
         body[key] = val;
@@ -514,11 +516,9 @@ window.addEventListener('DOMContentLoaded', function () {
       });
       if (isFalse) return;
 
-      selector.appendChild(preloaderDiv);
-      selector.appendChild(statusMessage);
+      // selector.appendChild(preloaderDiv);
 
-
-      let urLink = "../server.php";
+      let urLink = "./server.php";
 
       getData(urLink, selector)
         .then(data => {
@@ -526,7 +526,6 @@ window.addEventListener('DOMContentLoaded', function () {
             statusMessage.textContent = errorMessage;
             throw new Error('status not 200');
           }
-          loadMessage();
           statusMessage.textContent = success;
           preloaderDiv.style.display = 'none';
           console.log(data);
@@ -596,8 +595,6 @@ window.addEventListener('DOMContentLoaded', function () {
     form2.addEventListener('submit', e => {
       e.preventDefault();
       send(form2);
-      removeValidErr();
-
       preloaderDiv.style.top = '90%';
 
     });
@@ -606,8 +603,6 @@ window.addEventListener('DOMContentLoaded', function () {
       statusMessage.style.color = '#fff';
       preloaderDiv.style.top = '90%';
       send(form3);
-      removeValidErr();
-
     });
   };
 
