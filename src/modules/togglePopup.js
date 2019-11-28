@@ -1,11 +1,10 @@
-//popup
-const popup = document.querySelector('.popup'),
-  popupBtn = document.querySelectorAll('.popup-btn'),
-  popupClose = document.querySelector('.popup-close');
-popup.style.transition = 'all 0.5s';
-popup.style.transform = 'translateY(-100%)';
-popup.style.display = 'block';
-const checkScreen = function () {
+const togglePopup = function () {
+  const popup = document.querySelector('.popup'),
+    popupBtn = document.querySelectorAll('.popup-btn');
+
+  popup.style.transition = 'all 0.5s';
+  popup.style.transform = 'translateY(-100%)';
+  popup.style.display = 'block';
   if (window.screen.width < 768) {
     popup.style.transition = 'all 0s ease 0s';
     popup.style.transform = 'translateY(0)';
@@ -20,8 +19,6 @@ const checkScreen = function () {
 
     }
   }
-};
-const togglePopup = function () {
   popupBtn.forEach((elem) => {
     elem.addEventListener('click', () => {
       checkScreen();

@@ -1,8 +1,4 @@
-function valid() {
-  /*****************************\ 
- *  Input validation         *
-\*************************** */
-
+const calcinp = () => {
   let inputValue = 0;
   let calcInputs = document.querySelectorAll('.calc-block input');
   calcInputs.forEach((item) => {
@@ -18,4 +14,5 @@ function valid() {
     });
   });
 }
-export default valid;
+
+export default calcinp;

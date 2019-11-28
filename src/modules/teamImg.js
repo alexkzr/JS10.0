@@ -1,10 +1,7 @@
-/*****************************\ 
-   *  Change image src         *
-  \*************************** */
-let teamImg = document.querySelectorAll('.command__photo'),
-  src, data;
+const imgTeam = () => {
+  let teamImg = document.querySelectorAll('.command__photo'),
+    src, data;
 
-function img() {
   teamImg.forEach((item) => {
     item.addEventListener('mouseover', (e) => {
       src = e.target.src;
@@ -21,5 +18,4 @@ function img() {
     });
   });
 }
-
-export default img;
+export default imgTeam;

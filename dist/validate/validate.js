@@ -1,5 +1,5 @@
 'use strict';
-class Validator {
+export default class Validator {
   constructor({ selector, pattern = {}, method }) {
     this.form = document.querySelector(selector);
     this.pattern = pattern;
@@ -108,3 +108,5 @@ class Validator {
   }
 
 }
+
+// module.exports = Validator;

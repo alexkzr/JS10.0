@@ -1,11 +1,35 @@
 //Timer
-function countTimer(deadline) {
+function countTimer() {
   let timerHours = document.querySelector('#timer-hours'),
     timerMinutes = document.querySelector('#timer-minutes'),
     timerSeconds = document.querySelector('#timer-seconds');
 
+  let months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'Octover',
+    'November',
+    'December'];
+  let date = new Date();
+  let day = date.getDate() + 1;
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let monthName = months[month];
+  let hours = date.getHours();
+  let hoursTotal = (hours + 24) / 24;
+  let hoursRounded = hoursTotal.toFixed(2);
+  let moreDays = day * hoursRounded;
+  let twentyFour = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
+
   function getTimeRemaining() {
-    let dateStop = new Date(deadline).getTime(),
+    let dateStop = new Date(twentyFour).getTime(),
       dateNow = new Date().getTime(),
       timeRemaining = (dateStop - dateNow) / 1000,
       seconds = ('0' + Math.floor(timeRemaining % 60)).slice(-2),
@@ -32,30 +56,5 @@ function countTimer(deadline) {
   }
   updateClock();
 }
-const plusDay = function () {
-  let months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'Octover',
-    'November',
-    'December'];
-  let date = new Date();
-  let day = date.getDate() + 1;
-  let year = date.getFullYear();
-  let month = date.getMonth();
-  let monthName = months[month];
-  let hours = date.getHours();
-  let hoursTotal = (hours + 24) / 24;
-  let hoursRounded = hoursTotal.toFixed(2);
-  let moreDays = day * hoursRounded;
-  let twentyFour = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
-  return twentyFour;
-};
+
 export default countTimer;
