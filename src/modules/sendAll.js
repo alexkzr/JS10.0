@@ -1,4 +1,7 @@
-import Validator from "../js/validate/validate";
+// const validator = require('../js/validate/validate');
+import Validator from "../validate/validate";
+
+console.log('Validator: ', Validator);
 
 
 
@@ -57,6 +60,14 @@ const sendAll = () => {
       const formData = new FormData(selector);
       selector.appendChild(statusMessage);
       statusMessage.textContent = loadMessage;
+      selector.querySelectorAll('input').forEach((item) => {
+        item.value = '';
+        if (item.nextElementSibling) {
+          if (item.nextElementSibling.classList.contains('validator-error')) {
+            item.nextElementSibling.remove();
+          }
+        }
+      });
       let body = {};
       formData.forEach((val, key) => {
         body[key] = val;
