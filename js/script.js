@@ -618,7 +618,7 @@ window.addEventListener('DOMContentLoaded', function () {
   const valid1 = new Validator({
     selector: '#form1',
     pattern: {
-      phone: /^\+7\d{10}$/,
+      phone: /^\+[78]([-()]*\d){10}$/,
       email: /^\w+@\w+\.\w{2,3}$/,
       name: /^[А-Яа-я]+$/,
     },
@@ -646,7 +646,7 @@ window.addEventListener('DOMContentLoaded', function () {
   const valid2 = new Validator({
     selector: '#form2',
     pattern: {
-      phone: /^\+7\d{10}$/,
+      phone: /^\+[78]([-()]*\d){10}$/,
       email: /^\w+@\w+\.\w{2,3}$/,
       name: /^[А-Яа-я]+$/,
       // name: /^[A-Za-zА-Яа-яЁё]+$/
@@ -675,7 +675,7 @@ window.addEventListener('DOMContentLoaded', function () {
   const valid3 = new Validator({
     selector: '#form3',
     pattern: {
-      phone: /^\+7\d{10}$/,
+      phone: /^\+[78]([-()]*\d){10}$/,
       email: /^\w+@\w+\.\w{2,3}$/,
       name: /^[А-Яа-я]+$/,
     },
