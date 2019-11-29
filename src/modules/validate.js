@@ -94,7 +94,7 @@ export default class Validator {
   setPattern() {
 
     if (!this.pattern.phone) {
-      this.pattern.phone = /^\+[78]([-()]*\d){10}$/;
+      this.pattern.phone = /^\+?[78]([-()]*\d){10}$/;
     }
     if (!this.pattern.email) {
       this.pattern.email = /^\w+@\w+\.\w{2,}\w+?$/;
