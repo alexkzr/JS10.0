@@ -3,9 +3,9 @@ const popup = document.querySelector('.popup'),
 
 popup.style.transition = 'all 0.5s';
 popup.style.transform = 'translateY(-100%)';
+popup.style.display = 'block';
 const togglePopup = function () {
   const checkScreen = () => {
-    popup.style.display = 'block';
     if (window.screen.width < 768) {
       popup.style.transition = 'all 0s ease 0s';
       popup.style.transform = 'translateY(0)';
