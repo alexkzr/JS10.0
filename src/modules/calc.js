@@ -25,7 +25,7 @@ const calc = (price = 100) => {
       dayValue *= 1.5;
     }
 
-    if (typeValue && squareValue) {
+    if (typeValue && squareValue > 0) {
       total = price * typeValue * squareValue * countValue * dayValue;
     }
 
