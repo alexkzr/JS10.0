@@ -1,11 +1,5 @@
-// const validator = require('../js/validate/validate');
-import Validator from "../validate/validate";
 
-console.log('Validator: ', Validator);
-
-
-
-// const Validator = require('validate/validate.js');
+import Validator from './validate';
 const sendAll = () => {
   let validatorError = document.querySelectorAll('.validator-error');
   const sendForm = () => {
@@ -96,7 +90,7 @@ const sendAll = () => {
 
       // selector.appendChild(preloaderDiv);
 
-      let urLink = "./server.php";
+      let urLink = "../server.php";
 
       getData(urLink, selector)
         .then(data => {
@@ -112,59 +106,6 @@ const sendAll = () => {
 
     };
 
-    /* OLD PIECE OF CODE
-        const send = (selector) => {
-          let isFalse = 0;
-          validArr.forEach((item) => {
-            if (item.form === selector) {
-              item.elementsForm.forEach((input) => {
-                if (!item.isValid(input)) {
-                  isFalse++;
-                }
-              });
-            }
-          });
-          if (isFalse) return;
-    
-          selector.appendChild(preloaderDiv);
-          selector.appendChild(statusMessage);
-          const request = new XMLHttpRequest();
-    
-          request.addEventListener('readystatechange', () => {
-            statusMessage.textContent = loadMessage();
-            if (request.readyState !== 4) {
-              return;
-            }
-            if (request.status === 200) {
-              statusMessage.textContent = success;
-              preloaderDiv.style.display = 'none';
-            } else {
-              statusMessage.textContent = errorMessage;
-            }
-          });
-    
-          request.open('POST', './server.php');
-          request.setRequestHeader('Content-Type', 'application/json');
-          const formData = new FormData(selector);
-    
-          let body = {};
-          formData.forEach((val, key) => {
-            body[key] = val;
-          });
-    
-          request.send(JSON.stringify(body));
-          selector.querySelectorAll('input').forEach((item) => {
-            item.value = '';
-            removeValidErr();
-            if (item.nextElementSibling) {
-              if (item.nextElementSibling.classList.contains('validator-error')) {
-                item.nextElementSibling.remove();
-              }
-            }
-          });
-    
-        };
-        */
     form.addEventListener('submit', e => {
       e.preventDefault();
       send(form);
@@ -186,6 +127,8 @@ const sendAll = () => {
   sendForm();
 
   let validArr = [];
+
+  //validator
   const valid1 = new Validator({
     selector: '#form1',
     pattern: {

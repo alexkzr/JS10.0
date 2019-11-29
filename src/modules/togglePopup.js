@@ -1,24 +1,26 @@
+const popup = document.querySelector('.popup'),
+  popupBtn = document.querySelectorAll('.popup-btn');
+
+popup.style.transition = 'all 0.5s';
+popup.style.transform = 'translateY(-100%)';
 const togglePopup = function () {
-  const popup = document.querySelector('.popup'),
-    popupBtn = document.querySelectorAll('.popup-btn');
-
-  popup.style.transition = 'all 0.5s';
-  popup.style.transform = 'translateY(-100%)';
-  popup.style.display = 'block';
-  if (window.screen.width < 768) {
-    popup.style.transition = 'all 0s ease 0s';
-    popup.style.transform = 'translateY(0)';
+  const checkScreen = () => {
     popup.style.display = 'block';
-  } else {
-    popup.style.transition = 'all 0.5s';
-    if (!popup.style.transform || popup.style.transform === 'translateY(-100%)') {
-      popup.style.display = 'block';
+    if (window.screen.width < 768) {
+      popup.style.transition = 'all 0s ease 0s';
       popup.style.transform = 'translateY(0)';
+      popup.style.display = 'block';
     } else {
-      popup.style.transform = 'translateY(-100%)';
+      popup.style.transition = 'all 0.5s';
+      if (!popup.style.transform || popup.style.transform === 'translateY(-100%)') {
+        popup.style.display = 'block';
+        popup.style.transform = 'translateY(0)';
+      } else {
+        popup.style.transform = 'translateY(-100%)';
 
+      }
     }
-  }
+  };
   popupBtn.forEach((elem) => {
     elem.addEventListener('click', () => {
       checkScreen();

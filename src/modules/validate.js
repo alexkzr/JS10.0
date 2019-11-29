@@ -108,5 +108,3 @@ export default class Validator {
   }
 
 }
-
-// module.exports = Validator;

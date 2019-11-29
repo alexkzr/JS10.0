@@ -1,4 +1,4 @@
-class SliderCarousel {
+export default class SliderCarousel {
   constructor({
     main,
     wrap,
