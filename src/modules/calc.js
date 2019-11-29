@@ -28,7 +28,15 @@ const calc = (price = 100) => {
     if (typeValue && squareValue > 0) {
       total = price * typeValue * squareValue * countValue * dayValue;
     }
-
+    if (squareValue === 0) {
+      let firstOption = document.querySelector('.calc-option-title');
+      total = 0;
+      squareValue = '';
+      calcCount.value = '';
+      calcDay.value = '';
+      // firstOption.selected = true;
+      // typeValue.firstChild = selected;
+    }
 
     // totalValue.textContent = total;
     if (calcSquare.value > 0) {
