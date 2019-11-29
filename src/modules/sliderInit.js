@@ -1,4 +1,4 @@
-import SliderCarousel from "./modules/bigSlider";
+import SliderCarousel from "./bigSlider";
 
 const sliderInit = () => {
   const carousel = new SliderCarousel({
@@ -29,4 +29,6 @@ const sliderInit = () => {
       }]
   });
   carousel.init();
-}
+};
+
+export default sliderInit;

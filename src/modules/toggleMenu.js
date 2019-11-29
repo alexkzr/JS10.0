@@ -12,8 +12,8 @@ const toggleMenu = () => {
     let target = e.target,
       parent = target.parentNode;
     if (parent.matches('.menu') ||
-      target.matches('.close-btn') ||
-      target.tagName === 'MENU') {
+      target.matches('.close-btn') /*||
+      target.tagName === 'MENU'*/) {
       menu.classList.toggle('active-menu');
     } else if (parent.tagName === 'LI' && parent.parentNode.parentNode.tagName === 'MENU') {
       menu.classList.toggle('active-menu');
@@ -23,8 +23,6 @@ const toggleMenu = () => {
         scrollTo = document.querySelector(`${link[0]}`);
         scrollTo.scrollIntoView({ block: "center", behavior: "smooth" });
       }));
-    } else if (!parent.matches('menu') && menu.classList.contains('active-menu')) {
-      menu.classList.remove('active-menu');
     }
   });
 

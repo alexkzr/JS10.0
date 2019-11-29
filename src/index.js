@@ -11,11 +11,9 @@ import countTimer from "./modules/countTimer";
 import toggleMenu from "./modules/toggleMenu";
 import togglePopup from "./modules/togglePopup";
 import scrollDownFunc from "./modules/scrollDown";
-import Validator from "./modules/validate";
 import sendAll from "./modules/sendAll";
 import slider from "./modules/slider";
 import sliderInit from "./modules/sliderInit";
-import sliderCarousel from "./modules/bigSlider";
 import tabs from "./modules/tabs";
 import imgTeam from "./modules/teamImg";
 
