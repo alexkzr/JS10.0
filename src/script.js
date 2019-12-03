@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
-
+    import SliderCarousel from 'slider';
     //popups
     const popupShow = () => {
         const body = document.querySelector('body'),
@@ -22,6 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             .slide{
                 opacity: 0;
+            }
+            .wrapper {
+                position: relative;
             }
             .portfolio-dots {
                 position: absolute;
@@ -96,12 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     popupShow();
 
     //slider
-    const mainSlider = () => {
-        const slider = document.querySelector('.main-slider'),
-            wrapper = document.querySelector('.head-slider .wrapper');
-        let slide = document.querySelectorAll('.main-slider > .slide'),
-            currentSlide = 0, interval;
-
+    const mainSlider = (slide, wrapper, dots = true, arrows = false) => {
+        let currentSlide = 0, interval;
         const createDots = () => {
             let dotsWrap = document.createElement('ul');
             dotsWrap.classList.add('portfolio-dots');
@@ -113,8 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             wrapper.appendChild(dotsWrap);
         };
-
-        createDots();
+        if (dots) {
+            createDots();
+        }
         let dot = document.querySelectorAll('.dot');
 
         const prevSlide = (elem, index, strClass) => {
@@ -158,6 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             prevSlide(slide, currentSlide, 'portfolio-item-active');
             prevSlide(dot, currentSlide, 'dot-active');
+            if (arrows) {
+                if (target.matches('#arrow-right')) {
+                    currentSlide++;
+                } else if (target.matches('#arrow-left')) {
+                    currentSlide--;
+                }
+            }
 
             if (target.matches('.dot')) {
                 dot.forEach((elem, index) => {
@@ -189,9 +196,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     };
-    mainSlider();
+    const mainWrap = document.querySelector('.head-slider > .wrapper');
+    let mainSlide = document.querySelectorAll('.main-slider > .slide');
+    const galleryWrap = document.querySelector('.gallery-bg > .wrapper');
+    let gallerySlide = document.querySelectorAll('.gallery-slider > .slide');
+    console.log('gallerySlide: ', gallerySlide);
+    mainSlider(mainSlide, mainWrap);
+    mainSlider(gallerySlide, galleryWrap);
 
 
+    const sliderInit = () => {
+        const carousel = new SliderCarousel({
+            main: '.services-slider',
+            wrap: '#services .wrapper',
+            slidesToShow: 4,
+            infinity: true,
 
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    slidesToShow: 4,
+                },
+                {
+                    breakpoint: 1024,
+                    slidesToShow: 3,
 
+                },
+                {
+                    breakpoint: 768,
+                    slidesToShow: 2,
+
+                },
+                {
+                    breakpoint: 576,
+                    slidesToShow: 1,
+
+                }]
+        });
+        carousel.init();
+    };
+    sliderInit();
 });
