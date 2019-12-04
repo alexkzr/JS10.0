@@ -200,15 +200,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const stopSlide = () => {
             clearInterval(interval);
         };
+
         wrapper.addEventListener('click', e => {
             e.preventDefault();
             let target = e.target;
-            console.log('target: ', target);
-            if (!target.matches(`.${parent.className}-dot`)) {
-                return;
-            }
+
             prevSlide(slide, currentSlide, 'portfolio-item-active');
             prevSlide(dot, currentSlide, 'dot-active');
+
             if (target.matches('#arrow-right')) {
                 console.log('arrowright triggered');
                 currentSlide++;
@@ -232,6 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             nextSlide(slide, currentSlide, 'portfolio-item-active');
             nextSlide(dot, currentSlide, 'dot-active');
+            if (!target.matches(`.${parent.className}-dot`) || !target.matches('#arrow-left') || !target.matches('#arrow-right')) {
+                return;
+            }
         });
         wrapper.addEventListener('mouseover', e => {
             if (e.target.matches(`.${parent.className}-dot`)) {
@@ -245,6 +247,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         startSlide(2000);
 
+        const sliderInit = () => {
+            const carousel = new SliderCarousel({
+                main: '#services .wrapper',
+                wrap: '.services-slider',
+                slidesToShow: 5,
+                infinity: true,
+
+                responsive: [
+                    {
+                        breakpoint: 1200,
+                        slidesToShow: 5,
+                    },
+                    {
+                        breakpoint: 1024,
+                        slidesToShow: 3,
+
+                    },
+                    {
+                        breakpoint: 768,
+                        slidesToShow: 2,
+
+                    },
+                    {
+                        breakpoint: 576,
+                        slidesToShow: 1,
+
+                    }]
+            });
+            carousel.init();
+        };
+        sliderInit();
 
     };
     const mainWrap = document.querySelector('.head-slider > .wrapper');
@@ -257,37 +290,166 @@ document.addEventListener('DOMContentLoaded', () => {
     mainSlider(mainParent, mainSlide, mainWrap, true, false);
     mainSlider(galleryParent, gallerySlide, galleryWrap, true, true);
 
+    //card calculator
 
-    const sliderInit = () => {
-        const carousel = new SliderCarousel({
-            main: '#services .wrapper',
-            wrap: '.services-slider',
-            slidesToShow: 5,
-            infinity: true,
+    /*sendall*/
+    const sendForm = () => {
 
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    slidesToShow: 5,
+        const statusMessage = document.createElement('div');
+        const preloaderDiv = document.createElement('div');
+        preloaderDiv.id = 'hellopreloader_preload';
+        let hellopreloader = document.getElementById("hellopreloader_preload");
+
+        const preloader = () => {
+            console.log('hellopreloader: ', hellopreloader);
+            console.log('preloaderDiv: ', preloaderDiv);
+            preloaderDiv.style.display = "block";
+            // hellopreloader.style.display = "block";
+
+            let styleDiv = document.createElement('style');
+            styleDiv.textContent = `
+      #hellopreloader>p{
+        display:none;
+      }
+      form {
+        position: relative;
+      }
+      #hellopreloader_preload{
+        display: block;
+        position: absolute;
+        z-index: 99999;
+        top: 58%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 100px;
+        background: url(./images/pre.svg) center center no-repeat;
+        background-size: 30px;
+      }`;
+            document.head.appendChild(styleDiv);
+
+        };
+
+
+        const errorMessage = 'Что-то пошло не так...',
+            loadMessage = 'Загрузка...',
+            success = 'Спасибо! Мы свяжемся с вами!';
+        statusMessage.style.cssText = 'font-size: 2rem;';
+        statusMessage.className = 'statusMessage';
+
+
+
+        const getData = (url, selector) => {
+            const formData = new FormData(selector);
+            console.log('formData: ', formData);
+            selector.appendChild(statusMessage);
+            statusMessage.textContent = loadMessage;
+            selector.querySelectorAll('input').forEach((item) => {
+                item.value = '';
+                if (item.nextElementSibling) {
+                    if (item.nextElementSibling.classList.contains('validator-error')) {
+                        item.nextElementSibling.remove();
+                    }
+                }
+            });
+            let body = {};
+            formData.forEach((val, key) => {
+                body[key] = val;
+            });
+            return fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                {
-                    breakpoint: 1024,
-                    slidesToShow: 3,
+                body: JSON.stringify(body)
+            });
+        };
 
-                },
-                {
-                    breakpoint: 768,
-                    slidesToShow: 2,
+        const send = (selector) => {
+            // let isFalse = 0;
+            // validArr.forEach((item) => {
+            //     if (item.form === selector) {
+            //         item.elementsForm.forEach((input) => {
+            //             if (!item.isValid(input)) {
+            //                 isFalse++;
+            //             }
+            //         });
+            //     }
+            // });
+            // if (isFalse) return;
 
-                },
-                {
-                    breakpoint: 576,
-                    slidesToShow: 1,
+            // selector.appendChild(preloaderDiv);
 
-                }]
+            let urLink = "../server.php";
+
+            getData(urLink, selector)
+                .then(data => {
+                    if (data.status !== 200) {
+                        statusMessage.textContent = errorMessage;
+                        throw new Error('status not 200');
+                    }
+                    statusMessage.textContent = success;
+                    preloaderDiv.style.display = 'none';
+                    console.log(data);
+                })
+                .catch(error => console.error(error));
+
+        };
+        const calcForm = document.getElementById('card_order');
+        let forms = document.querySelectorAll('form');
+
+        calcForm.addEventListener('change', e => {
+            let target = e.target;
+            const promo = document.querySelector('.price-message input'),
+                priceDiv = document.querySelector('.price'),
+                priceInput = document.createElement('input'),
+                priceTotal = document.getElementById('price-total');
+            let total = 1990;
+            priceInput.name = 'price';
+            priceInput.type = 'hidden';
+            calcForm.appendChild(priceInput);
+            promo.name = 'promo';
+
+            if (target.matches('#card_leto_mozaika')) {
+                console.log(target);
+                total = 1990;
+            } else if (target.matches('#card_leto_schelkovo')) {
+                console.log(target);
+                total = 2999;
+            }
+            if (target.matches('.price-message input').value === 'ТЕЛО2019') {
+                console.log(target);
+                total = total / 3;
+            }
+
+            let timeInputs = document.querySelectorAll('.time input');
+            timeInputs.forEach((item) => {
+                if (item.checked) {
+                    total = total * +item.value;
+                }
+            });
+
+            priceTotal.textContent = total;
+            priceInput.value = priceTotal.textContent;
+            console.log('priceInput: ', priceInput);
+
         });
-        carousel.init();
+
+        calcForm.addEventListener('submit', e => {
+            e.preventDefault();
+            send(calcForm);
+
+        });
+        forms.forEach((item) => {
+            item.addEventListener('submit', e => {
+                e.preventDefault();
+                send(item);
+
+            });
+        });
     };
-    sliderInit();
+    sendForm();
+
+
 
 });
