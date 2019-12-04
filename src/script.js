@@ -1,4 +1,4 @@
-//import SliderCarousel from 'slider';
+import SliderCarousel from 'slider';
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
     //popups
