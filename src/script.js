@@ -1,6 +1,6 @@
+//import SliderCarousel from 'slider';
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
-    import SliderCarousel from 'slider';
     //popups
     const popupShow = () => {
         const body = document.querySelector('body'),
@@ -201,39 +201,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryWrap = document.querySelector('.gallery-bg > .wrapper');
     let gallerySlide = document.querySelectorAll('.gallery-slider > .slide');
     console.log('gallerySlide: ', gallerySlide);
+
     mainSlider(mainSlide, mainWrap);
-    mainSlider(gallerySlide, galleryWrap);
-
-
-    const sliderInit = () => {
-        const carousel = new SliderCarousel({
-            main: '.services-slider',
-            wrap: '#services .wrapper',
-            slidesToShow: 4,
-            infinity: true,
-
-            responsive: [
-                {
-                    breakpoint: 1200,
-                    slidesToShow: 4,
-                },
-                {
-                    breakpoint: 1024,
-                    slidesToShow: 3,
-
-                },
-                {
-                    breakpoint: 768,
-                    slidesToShow: 2,
-
-                },
-                {
-                    breakpoint: 576,
-                    slidesToShow: 1,
-
-                }]
-        });
-        carousel.init();
-    };
-    sliderInit();
+    // mainSlider(gallerySlide, galleryWrap);
+    /*
+    
+        const sliderInit = () => {
+            const carousel = new SliderCarousel({
+                main: '.services-slider',
+                wrap: '#services .wrapper',
+                slidesToShow: 4,
+                infinity: true,
+    
+                responsive: [
+                    {
+                        breakpoint: 1200,
+                        slidesToShow: 5,
+                    },
+                    {
+                        breakpoint: 1024,
+                        slidesToShow: 4,
+    
+                    },
+                    {
+                        breakpoint: 768,
+                        slidesToShow: 3,
+    
+                    },
+                    {
+                        breakpoint: 576,
+                        slidesToShow: 1,
+    
+                    }]
+            });
+            carousel.init();
+        };
+        sliderInit();*/
 });
